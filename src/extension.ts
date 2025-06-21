@@ -34,10 +34,13 @@ export function activate(context: vscode.ExtensionContext): void {
       true
     );
     if (isFirstActivation) {
-      context.globalState.update("markdownHierarchyViewer.firstActivation", false);
+      context.globalState.update(
+        "markdownHierarchyViewer.firstActivation",
+        false
+      );
       vscode.window
         .showInformationMessage(
-          'Markdown Hierarchy Viewer extension is now active! Open a Markdown file and use "Markdown: Show Header Tree" command.',
+          'Markdown Hierarchy Viewer extension is now active! Open a Markdown file and use "Markdown: Show Hierarchy Viewer" command.',
           "Show Logs"
         )
         .then((selection) => {

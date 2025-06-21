@@ -1,5 +1,5 @@
 /**
- * Logging utility for the Markdown ASCII Tree extension
+ * Logging utility for the Markdown Hierarchy Viewer extension
  */
 
 import * as vscode from "vscode";

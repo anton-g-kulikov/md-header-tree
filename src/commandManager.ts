@@ -61,9 +61,9 @@ export class CommandManager {
 
       await this.webviewManager.showPreview(document);
     } catch (error) {
-      Logger.error("Error in showAsciiTree command", error as Error);
+      Logger.error("Error in showTree command", error as Error);
       vscode.window.showErrorMessage(
-        "Failed to show ASCII tree preview. Check the output logs for details."
+        "Failed to show hierarchy tree preview. Check the output logs for details."
       );
     }
   }
@@ -81,7 +81,7 @@ export class CommandManager {
 
       if (!this.webviewManager.isVisible()) {
         vscode.window.showInformationMessage(
-          'Tree preview is not currently open. Use "Show ASCII Header Tree" first.'
+          'Tree preview is not currently open. Use "Show Hierarchy Viewer" first.'
         );
         return;
       }

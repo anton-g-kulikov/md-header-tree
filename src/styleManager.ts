@@ -152,7 +152,7 @@ export class StyleManager {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'unsafe-inline';">
-  <title>Markdown ASCII Tree</title>
+  <title>Markdown Hierarchy Viewer</title>
   <style>${css}</style>
 </head>
 <body>

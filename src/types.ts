@@ -1,5 +1,5 @@
 /**
- * Type definitions for the Markdown ASCII Tree extension
+ * Type definitions for the Markdown Hierarchy Viewer extension
  */
 
 export interface MarkdownElement {
