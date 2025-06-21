@@ -59,9 +59,32 @@ export class WebviewManager {
       }
     );
 
+    // Set custom icon for the panel
+    this.panel.iconPath = {
+      light: vscode.Uri.file(
+        this.context.asAbsolutePath("assets/icons/hierarchy-light.svg")
+      ),
+      dark: vscode.Uri.file(
+        this.context.asAbsolutePath("assets/icons/hierarchy-dark.svg")
+      ),
+    };
+
+    // Set context for conditional menu display
+    vscode.commands.executeCommand(
+      "setContext",
+      "markdown-hierarchy-viewer.isActive",
+      true
+    );
+
     // Handle panel disposal
     this.panel.onDidDispose(
       () => {
+        // Clear context when panel is disposed
+        vscode.commands.executeCommand(
+          "setContext",
+          "markdown-hierarchy-viewer.isActive",
+          false
+        );
         this.dispose();
       },
       null,

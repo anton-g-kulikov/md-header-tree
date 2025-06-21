@@ -52,20 +52,30 @@
       {
         "command": "markdown-hierarchy-viewer.showTree",
         "title": "Markdown: Show Hierarchy Viewer",
+        "icon": {
+          "light": "./assets/icons/hierarchy-light.svg",
+          "dark": "./assets/icons/hierarchy-dark.svg"
+        },
         "when": "editorLangId == markdown"
       },
       {
         "command": "markdown-hierarchy-viewer.refresh",
         "title": "Markdown: Refresh Hierarchy Viewer",
+        "icon": {
+          "light": "./assets/icons/refresh-light.svg",
+          "dark": "./assets/icons/refresh-dark.svg"
+        },
         "when": "editorLangId == markdown"
       },
       {
         "command": "markdown-hierarchy-viewer.showLogs",
-        "title": "Markdown Hierarchy Viewer: Show Logs"
+        "title": "Markdown Hierarchy Viewer: Show Logs",
+        "icon": "$(output)"
       },
       {
         "command": "markdown-hierarchy-viewer.forceMarkdownMode",
         "title": "Markdown: Force Markdown Language Mode",
+        "icon": "$(file-code)",
         "when": "editorFocus"
       }
     ],
@@ -74,6 +84,11 @@
         {
           "command": "markdown-hierarchy-viewer.showTree",
           "when": "resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .mdown || resourceExtname == .mkd",
+          "group": "navigation"
+        },
+        {
+          "command": "markdown-hierarchy-viewer.refresh",
+          "when": "editorLangId == markdown && markdown-hierarchy-viewer.isActive",
           "group": "navigation"
         }
       ],

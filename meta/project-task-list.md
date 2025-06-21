@@ -45,9 +45,22 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
 - ✅ Extension ready for VS Code Marketplace publication
 
 
+### Enhanced File Detection and UI (1.1.0)
+
+- ✅ **Enhanced Markdown File Detection**: Added support for multiple Markdown extensions (.md, .markdown, .mdown, .mkd, .mdwn, .mdtxt, .mdtext, .text)
+- ✅ **Content-based File Detection**: Implemented intelligent Markdown content analysis in `fileDetection.ts`
+- ✅ **Custom Icon System**: Added custom SVG icons for commands and webview panel with theme-aware variants
+- ✅ **Improved Command Menu**: Updated editor menu conditions to support all Markdown extensions
+- ✅ **Force Markdown Mode Command**: Added utility command for troubleshooting file detection issues
+- ✅ **VS Code Task Configuration Fix**: Fixed problem matchers in `.vscode/tasks.json` to resolve task provider errors
+- ✅ **Context-aware UI**: Implemented conditional menu display based on active webview state
+- ✅ **Comprehensive Documentation**: Updated README, CHANGELOG, and meta documentation with new features
+- ✅ **Test Coverage**: Added test fixtures and documentation for new features
+- ✅ **Release Preparation**: Bumped to version 1.1.0, committed, tagged, and pushed to GitHub
+
 ## NOT Planned Tasks (as of yet) 📋
 
-### Version 1.1.0 Features
+### Future Version Features
 
 - 📋 Add collapsible tree sections
 - 📋 Implement tree node navigation (click to jump to section)

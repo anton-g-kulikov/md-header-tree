@@ -230,3 +230,108 @@ Verify error handling with malformed input.
 - [ ] CHANGELOG.md updated
 - [ ] README.md reflects current features
 - [ ] Configuration documentation is current
+
+## Custom Icon Implementation
+
+The extension uses custom SVG icons to provide a consistent visual identity across different VS Code themes.
+
+### Icon System Architecture
+
+#### 1. **Command Icons**
+
+Commands in the editor title bar use custom SVG icons with theme-aware variants:
+
+```json
+{
+  "command": "markdown-hierarchy-viewer.showTree",
+  "icon": {
+    "light": "./assets/icons/hierarchy-light.svg",
+    "dark": "./assets/icons/hierarchy-dark.svg"
+  }
+}
+```
+
+#### 2. **Panel Icon**
+
+The webview panel itself displays a custom icon in the tab:
+
+```typescript
+this.panel.iconPath = {
+  light: vscode.Uri.file(
+    this.context.asAbsolutePath("assets/icons/hierarchy-light.svg")
+  ),
+  dark: vscode.Uri.file(
+    this.context.asAbsolutePath("assets/icons/hierarchy-dark.svg")
+  ),
+};
+```
+
+#### 3. **Context-Aware Menu Items**
+
+Menu items appear conditionally based on extension state:
+
+- **Show Tree**: Appears for Markdown files (`.md`, `.markdown`, `.mdown`, `.mkd`)
+- **Refresh**: Only appears when the hierarchy viewer panel is active
+
+### Icon Design Guidelines
+
+#### 1. **Size and Format**
+
+- **Size**: 16x16 pixels for optimal clarity
+- **Format**: SVG for scalability and theme compatibility
+- **Colors**: Use `currentColor` or theme-specific colors
+
+#### 2. **Theme Support**
+
+- **Light Theme**: Darker colors for contrast
+- **Dark Theme**: Lighter colors with accent highlights
+
+#### 3. **Visual Consistency**
+
+- Icons follow VS Code's design language
+- Maintain visual hierarchy and clarity
+- Use semantic colors (blue for interactive elements)
+
+### Adding New Icons
+
+1. **Create SVG Files**:
+
+   ```
+   assets/icons/
+   ├── new-feature-light.svg
+   └── new-feature-dark.svg
+   ```
+
+2. **Update package.json**:
+
+   ```json
+   {
+     "command": "extension.newFeature",
+     "icon": {
+       "light": "./assets/icons/new-feature-light.svg",
+       "dark": "./assets/icons/new-feature-dark.svg"
+     }
+   }
+   ```
+
+3. **Use in Code** (for panels):
+   ```typescript
+   panel.iconPath = {
+     light: vscode.Uri.file(
+       context.asAbsolutePath("assets/icons/new-feature-light.svg")
+     ),
+     dark: vscode.Uri.file(
+       context.asAbsolutePath("assets/icons/new-feature-dark.svg")
+     ),
+   };
+   ```
+
+### Icon Assets Structure
+
+```
+assets/icons/
+├── hierarchy-light.svg    # Main tree structure icon (light theme)
+├── hierarchy-dark.svg     # Main tree structure icon (dark theme)
+├── refresh-light.svg      # Refresh command icon (light theme)
+└── refresh-dark.svg       # Refresh command icon (dark theme)
+```

@@ -31,3 +31,7 @@ assets/*.temp
 # Sensitive information
 .env
 .secrets
+
+# Ignore copilot instructions
+.github/copilot-instructions.md
+.github/instructions
