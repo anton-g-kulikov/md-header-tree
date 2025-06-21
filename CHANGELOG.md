@@ -2,6 +2,27 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.0.1] - 2025-06-21
+
+### 🔧 Improvements
+
+- **📁 Enhanced Project Structure**: Reorganized documentation and testing structure
+  - Created comprehensive project documentation in `/meta` folder
+  - Added detailed test documentation and test case tracking
+  - Improved development guidelines and coding instructions
+- **🧪 Testing Enhancements**: Expanded test coverage and documentation
+  - Added integration tests for parser functionality
+  - Enhanced unit test structure and organization
+  - Implemented comprehensive test case tracking system
+- **📚 Documentation Updates**: Improved project documentation and organization
+  - Added project-specific documentation files
+  - Enhanced development and publishing guidelines
+  - Better organized assets and documentation structure
+- **🛠️ Development Experience**: Improved development workflow and structure
+  - Better organized project folders and files
+  - Enhanced ESLint configuration and TypeScript setup
+  - Improved gitignore configuration
+
 ## [1.0.0] - 2025-06-21
 
 ### 🎉 Initial Release

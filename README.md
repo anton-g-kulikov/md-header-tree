@@ -6,7 +6,7 @@
 
 A VS Code extension that transforms your Markdown documents into beautiful, live hierarchical structures.
 
-![Markdown Hierarchy Viewer in action](screenshot.png)
+![Markdown Hierarchy Viewer in action](assets/screenshot.png)
 _Live tree visualization showing the structure of a Markdown document with real-time preview_
 
 ## ✨ Features

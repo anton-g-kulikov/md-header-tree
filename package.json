@@ -2,7 +2,7 @@
   "name": "markdown-hierarchy-viewer",
   "displayName": "Markdown Hierarchy Viewer",
   "description": "Beautiful live tree visualization for Markdown files with headers, lists, paragraphs, and real-time updates. Features elegant typography and intuitive document structure preview.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "your-publisher-name",
   "repository": {
     "type": "git",

@@ -1,5 +1,29 @@
+# Build artifacts
 out
 dist
-node_modules
-.vscode-test/
 *.vsix
+
+# Dependencies
+node_modules
+
+# Testing
+.vscode-test/
+coverage/
+
+# OS and Editor files
+.DS_Store
+.vscode/settings.json
+.vscode/launch.json
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Keep assets directory but ignore temporary files
+assets/*.tmp
+assets/*.temp
