@@ -6,12 +6,12 @@
   "publisher": "your-publisher-name",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/markdown-hierarchy-viewer"
+    "url": "https://github.com/anton-g-kulikov/markdown-hierarchy-viewer"
   },
   "bugs": {
-    "url": "https://github.com/your-username/markdown-hierarchy-viewer/issues"
+    "url": "https://github.com/anton-g-kulikov/markdown-hierarchy-viewer/issues"
   },
-  "homepage": "https://github.com/your-username/markdown-hierarchy-viewer#readme",
+  "homepage": "https://github.com/anton-g-kulikov/markdown-hierarchy-viewer#readme",
   "license": "MIT",
   "keywords": [
     "markdown",
