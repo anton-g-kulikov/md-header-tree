@@ -9,6 +9,9 @@ export function activate(context: vscode.ExtensionContext) {
     'Congratulations, your extension "markdown-ascii-tree" is now active!'
   );
 
+  let panel: vscode.WebviewPanel | undefined;
+  let changeDocDisposable: vscode.Disposable | undefined;
+
   const disposable = vscode.commands.registerCommand(
     "markdown-ascii-tree.showAsciiTree",
     async () => {
@@ -22,17 +25,6 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage("Active file is not a Markdown file.");
         return;
       }
-      const text = doc.getText();
-      const lines = text.split(/\r?\n/);
-      const headers = lines
-        .map((line) => {
-          const match = line.match(/^(#+)\s+(.*)/);
-          if (match) {
-            return { level: match[1].length, text: match[2] };
-          }
-          return null;
-        })
-        .filter(Boolean) as { level: number; text: string }[];
 
       function buildTree(headers: { level: number; text: string }[]) {
         const root = { children: [] as any[] };
@@ -69,14 +61,111 @@ export function activate(context: vscode.ExtensionContext) {
           .join("");
       }
 
-      const tree = buildTree(headers);
-      const asciiTree = printTree(tree);
+      function printTreeDivs(node: any, prefix = "", isLast = true): string {
+        return node.children
+          .map((child: any, idx: number) => {
+            const isLastChild = idx === node.children.length - 1;
+            const linePrefix =
+              prefix +
+              (prefix ? (isLast ? "   " : "│  ") : "") +
+              (isLastChild ? "└─ " : "├─ ");
+            // Join all text lines back together and wrap the entire paragraph in one div
+            const fullText = child.text; // Keep original text with line breaks
+            const textStartPosition = linePrefix.length; // Calculate where text starts
+            return (
+              `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}${fullText}</div>` +
+              printTreeDivs(
+                child,
+                prefix + (isLast ? "   " : "│  "),
+                isLastChild
+              )
+            );
+          })
+          .join("");
+      }
 
-      const docNew = await vscode.workspace.openTextDocument({
-        language: "plaintext",
-        content: asciiTree,
+      function getAsciiTree(mdText: string): string {
+        const lines = mdText.split(/\r?\n/);
+        const headers = lines
+          .map((line) => {
+            const match = line.match(/^(#+)\s+(.*)/);
+            if (match) {
+              return { level: match[1].length, text: match[2] };
+            }
+            return null;
+          })
+          .filter(Boolean) as { level: number; text: string }[];
+        const tree = buildTree(headers);
+        return printTree(tree);
+      }
+
+      function getAsciiTreeDivs(mdText: string): string {
+        const lines = mdText.split(/\r?\n/);
+        const headers = lines
+          .map((line) => {
+            const match = line.match(/^(#+)\s+(.*)/);
+            if (match) {
+              return { level: match[1].length, text: match[2] };
+            }
+            return null;
+          })
+          .filter(Boolean) as { level: number; text: string }[];
+        const tree = buildTree(headers);
+        return printTreeDivs(tree);
+      }
+
+      function updateWebview(mdText: string) {
+        if (panel) {
+          const asciiTree = getAsciiTreeDivs(mdText);
+          panel.webview.html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown ASCII Tree</title>
+  <style>
+    body { font-family: monospace; margin: 0; padding: 4em; background:rgb(246, 246, 246); color:rgb(0, 0, 0); }
+    .tree-line { 
+      white-space: pre-wrap; /* allows wrapping but preserves spaces and line breaks */
+      word-break: break-word; /* breaks long words if needed */
+      padding: 0.5em 0;
+      text-indent: 0; /* reset any text-indent */
+    }
+    .tree-continuation {
+      padding-top: 0; /* Remove top padding for continuation lines */
+    }
+  </style>
+</head>
+<body>${asciiTree || "<i>No headers found</i>"}</body>
+</html>`;
+        }
+      }
+
+      if (!panel) {
+        panel = vscode.window.createWebviewPanel(
+          "markdownAsciiTreePreview",
+          "Markdown ASCII Tree Preview",
+          vscode.ViewColumn.Beside,
+          { enableScripts: false }
+        );
+        panel.onDidDispose(() => {
+          panel = undefined;
+          if (changeDocDisposable) {
+            changeDocDisposable.dispose();
+            changeDocDisposable = undefined;
+          }
+        });
+      }
+      updateWebview(doc.getText());
+
+      if (changeDocDisposable) {
+        changeDocDisposable.dispose();
+      }
+      changeDocDisposable = vscode.workspace.onDidChangeTextDocument((e) => {
+        if (e.document.uri.toString() === doc.uri.toString()) {
+          updateWebview(e.document.getText());
+        }
       });
-      await vscode.window.showTextDocument(docNew, { preview: false });
     }
   );
 
