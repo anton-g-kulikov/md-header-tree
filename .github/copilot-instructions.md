@@ -45,3 +45,4 @@ Adheare to the following development practices:
 - Maintain a clean and organized project structure.
 - Use meaningful commit messages that reflect the changes made.
 - Keep the CHANGELOG.md file updated with all notable changes.
+– Ensure main readme.md always reflects the current version and features of the project.
