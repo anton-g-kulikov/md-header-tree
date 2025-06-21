@@ -26,19 +26,21 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      function buildTree(headers: { level: number; text: string }[]) {
+      function buildTree(
+        elements: { level: number; text: string; type: string }[]
+      ) {
         const root = { children: [] as any[] };
         const stack = [{ node: root, level: 0 }];
-        for (const header of headers) {
+        for (const element of elements) {
           while (
             stack.length &&
-            header.level <= stack[stack.length - 1].level
+            element.level <= stack[stack.length - 1].level
           ) {
             stack.pop();
           }
-          const node = { ...header, children: [] as any[] };
+          const node = { ...element, children: [] as any[] };
           stack[stack.length - 1].node.children.push(node);
-          stack.push({ node, level: header.level });
+          stack.push({ node, level: element.level });
         }
         return root;
       }
@@ -69,8 +71,24 @@ export function activate(context: vscode.ExtensionContext) {
               prefix +
               (prefix ? (isLast ? "   " : "│  ") : "") +
               (isLastChild ? "└─ " : "├─ ");
+
+            // Add type indicator for different element types
+            let typeIcon = "";
+            switch (child.type) {
+              case "numbered-list":
+                // Extract original number from the text if available
+                const numberMatch = child.text.match(/^(\d+\.)\s*(.*)/);
+                if (numberMatch) {
+                  typeIcon = numberMatch[1] + " ";
+                  child.text = numberMatch[2]; // Use text without the number
+                }
+                break;
+              default:
+                typeIcon = "";
+            }
+
             // Join all text lines back together and wrap the entire paragraph in one div
-            const fullText = child.text; // Keep original text with line breaks
+            const fullText = typeIcon + child.text; // Keep original text with line breaks
             const textStartPosition = linePrefix.length; // Calculate where text starts
             return (
               `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}${fullText}</div>` +
@@ -90,27 +108,75 @@ export function activate(context: vscode.ExtensionContext) {
           .map((line) => {
             const match = line.match(/^(#+)\s+(.*)/);
             if (match) {
-              return { level: match[1].length, text: match[2] };
+              return { level: match[1].length, text: match[2], type: "header" };
             }
             return null;
           })
-          .filter(Boolean) as { level: number; text: string }[];
+          .filter(Boolean) as { level: number; text: string; type: string }[];
         const tree = buildTree(headers);
         return printTree(tree);
       }
 
       function getAsciiTreeDivs(mdText: string): string {
         const lines = mdText.split(/\r?\n/);
-        const headers = lines
-          .map((line) => {
-            const match = line.match(/^(#+)\s+(.*)/);
-            if (match) {
-              return { level: match[1].length, text: match[2] };
-            }
-            return null;
-          })
-          .filter(Boolean) as { level: number; text: string }[];
-        const tree = buildTree(headers);
+        const elements: { level: number; text: string; type: string }[] = [];
+        let currentHeaderLevel = 0;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+
+          // Skip empty lines
+          if (!line) {
+            continue;
+          }
+
+          // Check for headers
+          const headerMatch = line.match(/^(#+)\s+(.*)/);
+          if (headerMatch) {
+            currentHeaderLevel = headerMatch[1].length;
+            elements.push({
+              level: currentHeaderLevel,
+              text: headerMatch[2],
+              type: "header",
+            });
+            continue;
+          }
+
+          // Check for list items
+          const listMatch = line.match(/^(\s*)[-*+]\s+(.*)/);
+          if (listMatch) {
+            const indentLevel = Math.floor(listMatch[1].length / 2); // 2 spaces = 1 indent level
+            elements.push({
+              level: currentHeaderLevel + 1 + indentLevel,
+              text: listMatch[2],
+              type: "list",
+            });
+            continue;
+          }
+
+          // Check for numbered lists
+          const numberedListMatch = line.match(/^(\s*)(\d+\.\s+)(.*)/);
+          if (numberedListMatch) {
+            const indentLevel = Math.floor(numberedListMatch[1].length / 2);
+            elements.push({
+              level: currentHeaderLevel + 1 + indentLevel,
+              text: numberedListMatch[2] + numberedListMatch[3], // Include the number in the text
+              type: "numbered-list",
+            });
+            continue;
+          }
+
+          // Regular paragraphs (if we have a current header context)
+          if (currentHeaderLevel > 0) {
+            elements.push({
+              level: currentHeaderLevel + 1,
+              text: line,
+              type: "paragraph",
+            });
+          }
+        }
+
+        const tree = buildTree(elements);
         return printTreeDivs(tree);
       }
 

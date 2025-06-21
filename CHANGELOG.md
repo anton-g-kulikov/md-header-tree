@@ -2,6 +2,21 @@
 
 All notable changes to the "markdown-ascii-tree" extension will be documented in this file.
 
+## [1.1.0] - 2025-06-21
+
+### Added
+
+- Support for bullet lists (-, \*, +) in tree structure
+- Support for numbered lists (1., 2., 3.) in tree structure
+- Support for paragraphs under headers in tree structure
+- Visual type indicators: 📝 for headers, • for lists, 1. for numbered lists, ¶ for paragraphs
+- Proper indentation handling for nested lists
+
+### Improved
+
+- Enhanced parsing logic to handle multiple Markdown element types
+- Better tree level assignment for different content types
+
 ## [1.0.0] - 2025-06-21
 
 ### Added

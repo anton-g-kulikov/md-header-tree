@@ -1,12 +1,14 @@
 # Markdown ASCII Tree
 
-This VS Code extension adds a command to render the currently open Markdown file as an ASCII tree structure based on header levels with live preview.
+This VS Code extension adds a command to render the currently open Markdown file as an ASCII tree structure based on headers, paragraphs, and lists with live preview.
 
 ## Features
 
-- **Live ASCII Tree Preview**: Renders Markdown headers as an interactive ASCII tree structure
+- **Live ASCII Tree Preview**: Renders Markdown headers, paragraphs, and lists as an interactive ASCII tree structure
+- **Multiple Element Types**: Supports headers (# to ######), bullet lists (- \* +), numbered lists (1. 2. 3.), and paragraphs
 - **Real-time Updates**: Preview updates automatically as you edit your Markdown file
-- **Proper Text Wrapping**: Long header text wraps correctly while maintaining tree structure
+- **Proper Text Wrapping**: Long text wraps correctly while maintaining tree structure
+- **Original Numbering**: Preserves original numbers from numbered lists (1. 2. 3. etc.)
 - **Clean Visual Design**: Displays in a dedicated webview panel alongside your editor
 
 ## Usage
@@ -19,13 +21,18 @@ This VS Code extension adds a command to render the currently open Markdown file
 
 ## Example
 
-For a Markdown file with nested headers, you'll see output like:
+For a Markdown file with nested headers, lists, and paragraphs, you'll see output like:
 
 ```
 └─ My Project
    ├─ Introduction
+   │  ├─ This is an introduction paragraph explaining the project.
    │  └─ Getting Started
+   │     ├─ Install dependencies
+   │     ├─ Configure settings
+   │     └─ 1. Run the application
    ├─ Features
+   │  ├─ Here are the main features of our project.
    │  ├─ Core Features
    │  └─ Advanced Features
    └─ Documentation
