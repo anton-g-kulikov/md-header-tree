@@ -26,6 +26,21 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
+      function parseMarkdownFormatting(text: string): string {
+        // Convert **bold** and __bold__ to <strong>
+        text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        text = text.replace(/__(.*?)__/g, "<strong>$1</strong>");
+
+        // Convert *italic* and _italic_ to <em>
+        text = text.replace(/\*(.*?)\*/g, "<em>$1</em>");
+        text = text.replace(/_(.*?)_/g, "<em>$1</em>");
+
+        // Convert `code` to <code>
+        text = text.replace(/`(.*?)`/g, "<code>$1</code>");
+
+        return text;
+      }
+
       function buildTree(
         elements: { level: number; text: string; type: string }[]
       ) {
@@ -70,7 +85,7 @@ export function activate(context: vscode.ExtensionContext) {
             const linePrefix =
               prefix +
               (prefix ? (isLast ? "   " : "│  ") : "") +
-              (isLastChild ? "└─ " : "├─ ");
+              (isLastChild ? "└── " : "├── ");
 
             // Add type indicator for different element types
             let typeIcon = "";
@@ -88,10 +103,12 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             // Join all text lines back together and wrap the entire paragraph in one div
-            const fullText = typeIcon + child.text; // Keep original text with line breaks
+            const formattedText = parseMarkdownFormatting(
+              typeIcon + child.text
+            ); // Apply markdown formatting
             const textStartPosition = linePrefix.length; // Calculate where text starts
             return (
-              `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}${fullText}</div>` +
+              `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}<span class='tree-content'>${formattedText}</span></div>` +
               printTreeDivs(
                 child,
                 prefix + (isLast ? "   " : "│  "),
@@ -190,15 +207,43 @@ export function activate(context: vscode.ExtensionContext) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown ASCII Tree</title>
   <style>
-    body { font-family: monospace; margin: 0; padding: 4em; background:rgb(246, 246, 246); color:rgb(0, 0, 0); }
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+    body { 
+      font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; 
+      margin: 0; 
+      padding: 4em; 
+      background: rgb(246, 246, 246); 
+      color: rgb(0, 0, 0);
+      line-height: 1.6;
+    }
     .tree-line { 
+      font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
       white-space: pre-wrap; /* allows wrapping but preserves spaces and line breaks */
       word-break: break-word; /* breaks long words if needed */
       padding: 0.5em 0;
       text-indent: 0; /* reset any text-indent */
+      color: rgb(200, 200, 200); /* Gray color for tree symbols */
+    }
+    .tree-content {
+      font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      color: rgb(0, 0, 0); /* Reset to black for content */
     }
     .tree-continuation {
       padding-top: 0; /* Remove top padding for continuation lines */
+    }
+    strong {
+      font-weight: 700;
+    }
+    em {
+      font-style: italic;
+    }
+    code {
+      font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      background-color: rgba(175, 184, 193, 0.2);
+      color: rgb(0, 0, 0);
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
     }
   </style>
 </head>
