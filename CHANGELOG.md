@@ -2,6 +2,16 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.1.1] - 2025-06-21
+
+### 🎨 UI Improvements & Package Optimization
+
+- **🎯 Custom Icons**: Added custom SVG icons for commands and webview panel with light/dark theme variants
+- **📋 Context-aware Menus**: Implemented conditional menu display based on active webview state
+- **🔧 Task Configuration Fix**: Fixed VS Code task configuration problem matchers to resolve task provider errors
+- **📦 Clean Package**: Improved extension package by excluding development files and sensitive information
+- **📚 Documentation**: Enhanced icon testing documentation and development guides
+
 ## [1.1.0] - 2025-06-21
 
 ### 🔍 Enhanced File Detection

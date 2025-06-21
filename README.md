@@ -1,7 +1,7 @@
 # Markdown Hierarchy Viewer
 
 [![VS Code Extension](https://img.shields.io/badge/VS%20Code-Extension-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=Tony-g-K.markdown-hierarchy-viewer)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
+[![Version](https://img.shields.io/badge/version-1.1.1-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A VS Code extension that transforms your Markdown documents into beautiful, live hierarchical structures.

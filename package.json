@@ -2,7 +2,7 @@
   "name": "markdown-hierarchy-viewer",
   "displayName": "Markdown Hierarchy Viewer",
   "description": "Beautiful hierarchical visualization for Markdown files with real-time updates",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "Tony-g-K",
   "repository": {
     "type": "git",
