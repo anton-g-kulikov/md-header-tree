@@ -44,7 +44,6 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
 - ✅ Complete all critical publishing requirements
 - ✅ Extension ready for VS Code Marketplace publication
 
-
 ### Enhanced File Detection and UI (1.1.0)
 
 - ✅ **Enhanced Markdown File Detection**: Added support for multiple Markdown extensions (.md, .markdown, .mdown, .mkd, .mdwn, .mdtxt, .mdtext, .text)

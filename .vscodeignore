@@ -13,3 +13,7 @@ meta/**
 node_modules/**
 *.vsix
 **/.DS_Store
+.secrets
+.env
+.github/copilot-instructions.md
+.github/instructions/**
