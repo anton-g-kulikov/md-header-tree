@@ -9,7 +9,7 @@ suite("Extension Integration Tests", () => {
 
   test("Extension should activate successfully", async () => {
     const extension = vscode.extensions.getExtension(
-      "your-publisher-name.markdown-hierarchy-viewer"
+      "Tony-g-K.markdown-hierarchy-viewer"
     );
 
     if (extension) {

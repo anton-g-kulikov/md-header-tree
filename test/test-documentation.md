@@ -57,6 +57,8 @@ npm run pretest
 | `Configuration should be accessible`                    | Test configuration access | ✅ Implemented |
 | `Test fixture files should be parseable`                | Test fixture validity     | ✅ Implemented |
 
+**Recent Fix**: Updated extension ID in tests from placeholder `"your-publisher-name.markdown-hierarchy-viewer"` to actual `"Tony-g-K.markdown-hierarchy-viewer"`
+
 ### Parser Integration Tests (parser-integration.test.ts)
 
 | Test Case                                       | Purpose                     | Status         |
