@@ -6,6 +6,7 @@ import * as assert from "assert";
 import { MarkdownParser } from "../src/markdownParser";
 import { ConfigurationManager } from "../src/configuration";
 import { TreeRenderer } from "../src/treeRenderer";
+import { StyleManager } from "../src/styleManager";
 import { TreeNode } from "../src/types";
 
 suite("MarkdownParser Tests", () => {
@@ -198,6 +199,45 @@ suite("Configuration Tests", () => {
       "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
     );
   });
+
+  test("getConfiguration should include default header styling options", () => {
+    const config = ConfigurationManager.getConfiguration();
+
+    assert.ok(
+      config.headerStyling,
+      "Should include headerStyling configuration"
+    );
+    assert.strictEqual(
+      config.headerStyling.h1FontWeight,
+      "600",
+      "h1 should be bold by default"
+    );
+    assert.strictEqual(
+      config.headerStyling.h2FontWeight,
+      "600",
+      "h2 should be bold by default"
+    );
+    assert.strictEqual(
+      config.headerStyling.h3FontWeight,
+      "400",
+      "h3 should be normal by default"
+    );
+    assert.strictEqual(
+      config.headerStyling.h4FontWeight,
+      "400",
+      "h4 should be normal by default"
+    );
+    assert.strictEqual(
+      config.headerStyling.h5FontWeight,
+      "400",
+      "h5 should be normal by default"
+    );
+    assert.strictEqual(
+      config.headerStyling.h6FontWeight,
+      "400",
+      "h6 should be normal by default"
+    );
+  });
 });
 
 suite("TreeRenderer Tests", () => {
@@ -220,6 +260,14 @@ suite("TreeRenderer Tests", () => {
     styling: {
       lineHeight: 1.6,
       padding: "4em",
+    },
+    headerStyling: {
+      h1FontWeight: "600",
+      h2FontWeight: "600",
+      h3FontWeight: "400",
+      h4FontWeight: "400",
+      h5FontWeight: "400",
+      h6FontWeight: "400",
     },
   };
 
@@ -280,6 +328,233 @@ suite("TreeRenderer Tests", () => {
     assert.ok(
       result.includes(errorMessage),
       "Should contain the error message"
+    );
+  });
+
+  test("renderTree should add level-specific classes for headers", () => {
+    const tree: TreeNode = {
+      level: 0,
+      text: "",
+      type: "header",
+      children: [
+        {
+          level: 1,
+          text: "Header Level 1",
+          type: "header",
+          children: [],
+        },
+        {
+          level: 2,
+          text: "Header Level 2",
+          type: "header",
+          children: [],
+        },
+        {
+          level: 3,
+          text: "Header Level 3",
+          type: "header",
+          children: [],
+        },
+        {
+          level: 4,
+          text: "Header Level 4",
+          type: "header",
+          children: [],
+        },
+      ],
+    };
+
+    const result = TreeRenderer.renderTree(tree, mockConfig);
+
+    // Check that level-specific classes are added
+    assert.ok(
+      result.includes("tree-content header header-1"),
+      "Should include header-1 class for level 1 header"
+    );
+    assert.ok(
+      result.includes("tree-content header header-2"),
+      "Should include header-2 class for level 2 header"
+    );
+    assert.ok(
+      result.includes("tree-content header header-3"),
+      "Should include header-3 class for level 3 header"
+    );
+    assert.ok(
+      result.includes("tree-content header header-4"),
+      "Should include header-4 class for level 4 header"
+    );
+
+    // Verify that non-header elements don't get header level classes
+    const listElement: TreeNode = {
+      level: 1,
+      text: "List item",
+      type: "list",
+      children: [],
+    };
+
+    const listTree: TreeNode = {
+      level: 0,
+      text: "",
+      type: "header",
+      children: [listElement],
+    };
+
+    const listResult = TreeRenderer.renderTree(listTree, mockConfig);
+    assert.ok(
+      !listResult.includes("header-1"),
+      "Non-header elements should not get header level classes"
+    );
+    assert.ok(
+      listResult.includes("tree-content list"),
+      "List elements should have correct class"
+    );
+  });
+});
+
+suite("StyleManager Tests", () => {
+  const mockConfig = {
+    treeSymbols: {
+      branch: "├──",
+      last: "└──",
+      vertical: "│",
+      space: "   ",
+    },
+    colors: {
+      treeSymbols: "rgb(200, 200, 200)",
+      content: "rgb(0, 0, 0)",
+      background: "rgb(246, 246, 246)",
+    },
+    fonts: {
+      content: "'Noto Sans', Arial, sans-serif",
+      treeSymbols: "'SF Mono', Consolas, monospace",
+    },
+    styling: {
+      lineHeight: 1.6,
+      padding: "4em",
+    },
+    headerStyling: {
+      h1FontWeight: "600",
+      h2FontWeight: "600",
+      h3FontWeight: "400",
+      h4FontWeight: "400",
+      h5FontWeight: "400",
+      h6FontWeight: "400",
+    },
+  };
+
+  test("generateCSS should include header level-specific styling", () => {
+    const css = StyleManager.generateCSS(mockConfig);
+
+    // Check that general header styling is included
+    assert.ok(
+      css.includes(".tree-content.header"),
+      "Should include general header styling"
+    );
+
+    // Check that level-specific header styling is included
+    assert.ok(
+      css.includes(".tree-content.header.header-1"),
+      "Should include header-1 styling"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-2"),
+      "Should include header-2 styling"
+    );
+
+    // Check that bold font weight is applied to h1 and h2
+    assert.ok(
+      css.includes("font-weight: 600"),
+      "Should include bold font weight for h1 and h2"
+    );
+
+    // Check that normal font weight is the default
+    assert.ok(
+      css.includes("font-weight: 400"),
+      "Should include normal font weight as default"
+    );
+  });
+
+  test("generateHTML should create valid HTML structure", () => {
+    const content = "<div>Test content</div>";
+    const html = StyleManager.generateHTML(content, mockConfig);
+
+    assert.ok(html.includes("<!DOCTYPE html>"), "Should include DOCTYPE");
+    assert.ok(
+      html.includes('<html lang="en">'),
+      "Should include html tag with lang"
+    );
+    assert.ok(html.includes(content), "Should include the provided content");
+    assert.ok(html.includes("Content-Security-Policy"), "Should include CSP");
+  });
+
+  test("generateCSS should respect header weight configuration", () => {
+    const configWithCustomHeaders = {
+      ...mockConfig,
+      headerStyling: {
+        h1FontWeight: "700", // Bold
+        h2FontWeight: "600", // Semi-bold
+        h3FontWeight: "500", // Medium
+        h4FontWeight: "400", // Normal
+        h5FontWeight: "300", // Light
+        h6FontWeight: "200", // Extra light
+      },
+    };
+
+    const css = StyleManager.generateCSS(configWithCustomHeaders);
+
+    // Should include level-specific font weights
+    assert.ok(
+      css.includes(".tree-content.header.header-1") &&
+        css.includes("font-weight: 700"),
+      "Should apply custom font weight to h1"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-2") &&
+        css.includes("font-weight: 600"),
+      "Should apply custom font weight to h2"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-3") &&
+        css.includes("font-weight: 500"),
+      "Should apply custom font weight to h3"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-6") &&
+        css.includes("font-weight: 200"),
+      "Should apply custom font weight to h6"
+    );
+  });
+
+  test("generateCSS should handle default header weight values", () => {
+    const configWithDefaults = {
+      ...mockConfig,
+      headerStyling: {
+        h1FontWeight: "600",
+        h2FontWeight: "600",
+        h3FontWeight: "400",
+        h4FontWeight: "400",
+        h5FontWeight: "400",
+        h6FontWeight: "400",
+      },
+    };
+
+    const css = StyleManager.generateCSS(configWithDefaults);
+
+    // Should group h1-h2 as bold and h3-h6 as normal
+    assert.ok(
+      css.includes(".tree-content.header.header-1") &&
+        css.includes("font-weight: 600"),
+      "Should make h1 bold by default"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-2") &&
+        css.includes("font-weight: 600"),
+      "Should make h2 bold by default"
+    );
+    assert.ok(
+      css.includes(".tree-content.header.header-3") &&
+        css.includes("font-weight: 400"),
+      "Should make h3 normal weight by default"
     );
   });
 });

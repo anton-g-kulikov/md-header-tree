@@ -57,6 +57,29 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
 - ✅ **Test Coverage**: Added test fixtures and documentation for new features
 - ✅ **Release Preparation**: Bumped to version 1.1.0, committed, tagged, and pushed to GitHub
 
+### UI and Typography Enhancements (1.1.1+)
+
+- ✅ **Header Font Weight Optimization**: Modified header styling to make only headers level 1-2 bold, while headers 3-6 use normal font weight for better visual hierarchy
+
+  - Updated `TreeRenderer` to add level-specific CSS classes (`header-1`, `header-2`, etc.)
+  - Modified `StyleManager` to apply `font-weight: 600` only to headers 1-2 and `font-weight: 400` to others
+  - Added comprehensive tests for header level styling in both TreeRenderer and StyleManager
+
+- ✅ **Configurable Header Font Weight**: Made header font weight styling user-configurable through VS Code settings
+  - Added new configuration options for header font weights by level (H1-H6) in `package.json`
+  - Updated `ConfigurationManager` to handle header styling preferences with default values
+  - Modified `StyleManager` to use configuration-driven header styling instead of hardcoded values
+  - Added comprehensive tests for configuration-driven header styling (TDD approach)
+  - Updated README.md with detailed header styling customization documentation and examples
+
+### Release Management (1.2.0)
+
+- ✅ **Version 1.2.0 Release Preparation**: Prepared release for configurable header styling feature
+  - Incremented version from 1.1.1 to 1.2.0 (minor version for new feature)
+  - Updated CHANGELOG.md with comprehensive release notes
+  - Updated README.md version badge
+  - Verified all tests pass and code compiles without errors
+
 ## NOT Planned Tasks (as of yet) 📋
 
 ### Future Version Features

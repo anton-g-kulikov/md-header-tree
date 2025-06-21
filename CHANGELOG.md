@@ -2,6 +2,22 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.2.0] - 2025-06-21
+
+### ✨ Enhanced Customization
+
+- **🎨 Configurable Header Font Weights**: Added individual font weight controls for each header level (H1-H6)
+  - New VS Code settings: `markdownHierarchyViewer.headerStyling.h1FontWeight` through `h6FontWeight`
+  - Default: H1-H2 are bold (600), H3-H6 are normal (400) for better visual hierarchy
+  - Supports all CSS font-weight values (100-900, normal, bold, etc.)
+  - Real-time configuration updates without restart required
+
+### 🔧 Developer Improvements
+
+- **🧪 Enhanced Test Coverage**: Added comprehensive tests for configuration-driven styling
+- **📚 Improved Documentation**: Updated README with detailed header styling customization guide
+- **🏗️ Better Architecture**: Refactored StyleManager to use configuration-driven CSS generation
+
 ## [1.1.1] - 2025-06-21
 
 ### 🎨 UI Improvements & Package Optimization

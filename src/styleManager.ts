@@ -57,9 +57,29 @@ export class StyleManager {
         font-size: 0.9em;
       }
       
-      /* Header specific styling */
-      .tree-content.header {
-        font-weight: 600;
+      /* Header specific styling - configuration-driven */
+      .tree-content.header.header-1 {
+        font-weight: ${config.headerStyling.h1FontWeight};
+      }
+      
+      .tree-content.header.header-2 {
+        font-weight: ${config.headerStyling.h2FontWeight};
+      }
+      
+      .tree-content.header.header-3 {
+        font-weight: ${config.headerStyling.h3FontWeight};
+      }
+      
+      .tree-content.header.header-4 {
+        font-weight: ${config.headerStyling.h4FontWeight};
+      }
+      
+      .tree-content.header.header-5 {
+        font-weight: ${config.headerStyling.h5FontWeight};
+      }
+      
+      .tree-content.header.header-6 {
+        font-weight: ${config.headerStyling.h6FontWeight};
       }
       
       /* List item styling */

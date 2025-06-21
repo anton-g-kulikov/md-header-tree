@@ -41,6 +41,14 @@ export interface ExtensionConfig {
     lineHeight: number;
     padding: string;
   };
+  headerStyling: {
+    h1FontWeight: string;
+    h2FontWeight: string;
+    h3FontWeight: string;
+    h4FontWeight: string;
+    h5FontWeight: string;
+    h6FontWeight: string;
+  };
 }
 
 export interface ParseOptions {

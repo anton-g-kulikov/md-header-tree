@@ -30,10 +30,10 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": {
-            "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\."
+            "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Starting compilation in watch mode\\.\\.\\."
           },
           "endsPattern": {
-            "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - (?:Found \\d+ errors?\\. Watching for file changes\\.|Compilation complete\\. Watching for file changes\\.)"
+            "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Found \\d+ errors?\\. Watching for file changes\\."
           }
         }
       }
@@ -94,10 +94,10 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": {
-            "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\."
+            "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Starting compilation in watch mode\\.\\.\\."
           },
           "endsPattern": {
-            "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - (?:Found \\d+ errors?\\. Watching for file changes\\.|Compilation complete\\. Watching for file changes\\.)"
+            "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Found \\d+ errors?\\. Watching for file changes\\."
           }
         }
       }

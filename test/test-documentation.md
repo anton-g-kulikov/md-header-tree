@@ -29,22 +29,33 @@ npm run pretest
 
 ### Unit Tests (unit.test.ts)
 
-| Test Case                                                 | Purpose                           | Status         |
-| --------------------------------------------------------- | --------------------------------- | -------------- |
-| `parseMarkdownFormatting should handle bold text`         | Test **bold** markdown formatting | ✅ Implemented |
-| `parseMarkdownFormatting should handle italic text`       | Test _italic_ markdown formatting | ✅ Implemented |
-| `parseMarkdownFormatting should handle code text`         | Test `code` markdown formatting   | ✅ Implemented |
-| `parseMarkdownFormatting should handle mixed formatting`  | Test combined formatting          | ✅ Implemented |
-| `parseMarkdownFormatting should escape HTML`              | Test XSS protection               | ✅ Implemented |
-| `parseDocument should extract headers`                    | Test header extraction            | ✅ Implemented |
-| `parseDocument should handle nested lists`                | Test list parsing                 | ✅ Implemented |
-| `parseDocument should handle complex documents`           | Test comprehensive parsing        | ✅ Implemented |
-| `parseDocument should handle empty content`               | Test edge case handling           | ✅ Implemented |
-| `ConfigurationManager should return default config`       | Test configuration defaults       | ✅ Implemented |
-| `ConfigurationManager should handle custom config`        | Test configuration overrides      | ✅ Implemented |
-| `TreeRenderer should render simple tree`                  | Test basic tree rendering         | ✅ Implemented |
-| `TreeRenderer should render complex tree with formatting` | Test advanced rendering           | ✅ Implemented |
-| `TreeRenderer should handle empty tree`                   | Test edge case rendering          | ✅ Implemented |
+| Test Case                                                    | Purpose                           | Status         |
+| ------------------------------------------------------------ | --------------------------------- | -------------- |
+| `parseMarkdownFormatting should handle bold text`            | Test **bold** markdown formatting | ✅ Implemented |
+| `parseMarkdownFormatting should handle italic text`          | Test _italic_ markdown formatting | ✅ Implemented |
+| `parseMarkdownFormatting should handle code text`            | Test `code` markdown formatting   | ✅ Implemented |
+| `parseMarkdownFormatting should handle mixed formatting`     | Test combined formatting          | ✅ Implemented |
+| `parseMarkdownFormatting should escape HTML`                 | Test XSS protection               | ✅ Implemented |
+| `parseDocument should extract headers`                       | Test header extraction            | ✅ Implemented |
+| `parseDocument should handle nested lists`                   | Test list parsing                 | ✅ Implemented |
+| `parseDocument should handle complex documents`              | Test comprehensive parsing        | ✅ Implemented |
+| `parseDocument should handle empty content`                  | Test edge case handling           | ✅ Implemented |
+| `ConfigurationManager should return default config`          | Test configuration defaults       | ✅ Implemented |
+| `ConfigurationManager should handle custom config`           | Test configuration overrides      | ✅ Implemented |
+| `TreeRenderer should render simple tree`                     | Test basic tree rendering         | ✅ Implemented |
+| `TreeRenderer should render complex tree with formatting`    | Test advanced rendering           | ✅ Implemented |
+| `TreeRenderer should handle empty tree`                      | Test edge case rendering          | ✅ Implemented |
+| `TreeRenderer should add level-specific classes for headers` | Test header level CSS classes     | ✅ Implemented |
+| `StyleManager should include header level-specific styling`  | Test CSS generation for headers   | ✅ Implemented |
+| `StyleManager should create valid HTML structure`            | Test HTML generation              | ✅ Implemented |
+
+#### Configurable Header Styling Tests
+
+| Test Case Name                                               | Purpose                           | Status         |
+| ------------------------------------------------------------ | --------------------------------- | -------------- |
+| `ConfigurationManager should include header styling options` | Test header weight config options | ✅ Implemented |
+| `StyleManager should respect header weight configuration`    | Test config-driven CSS generation | ✅ Implemented |
+| `StyleManager should handle default header weight values`    | Test custom font weight values    | ✅ Implemented |
 
 ### Integration Tests (extension.test.ts)
 
@@ -74,6 +85,7 @@ All test fixtures are located in `/test/fixtures/`:
 - **`test-document.md`** - Basic Markdown with headers, lists, paragraphs
 - **`test-code-blocks.md`** - Various code block types and languages
 - **`test-readme-with-code.md`** - README-style document with code examples
+- **`header-styling-demo.md`** - Demonstrates header levels 1-6 for font weight testing
 
 ## Testing Guidelines
 

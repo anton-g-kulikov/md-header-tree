@@ -2,7 +2,7 @@
   "name": "markdown-hierarchy-viewer",
   "displayName": "Markdown Hierarchy Viewer",
   "description": "Beautiful hierarchical visualization for Markdown files with real-time updates",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "Tony-g-K",
   "repository": {
     "type": "git",
@@ -156,6 +156,36 @@
           "type": "string",
           "default": "4em",
           "description": "Padding around the preview content"
+        },
+        "markdownHierarchyViewer.headerStyling.h1FontWeight": {
+          "type": "string",
+          "default": "600",
+          "description": "Font weight for level 1 headers (CSS font-weight value)"
+        },
+        "markdownHierarchyViewer.headerStyling.h2FontWeight": {
+          "type": "string",
+          "default": "600",
+          "description": "Font weight for level 2 headers (CSS font-weight value)"
+        },
+        "markdownHierarchyViewer.headerStyling.h3FontWeight": {
+          "type": "string",
+          "default": "400",
+          "description": "Font weight for level 3 headers (CSS font-weight value)"
+        },
+        "markdownHierarchyViewer.headerStyling.h4FontWeight": {
+          "type": "string",
+          "default": "400",
+          "description": "Font weight for level 4 headers (CSS font-weight value)"
+        },
+        "markdownHierarchyViewer.headerStyling.h5FontWeight": {
+          "type": "string",
+          "default": "400",
+          "description": "Font weight for level 5 headers (CSS font-weight value)"
+        },
+        "markdownHierarchyViewer.headerStyling.h6FontWeight": {
+          "type": "string",
+          "default": "400",
+          "description": "Font weight for level 6 headers (CSS font-weight value)"
         }
       }
     }

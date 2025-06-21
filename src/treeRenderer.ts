@@ -56,7 +56,11 @@ export class TreeRenderer {
           }
           const textStartPosition = linePrefix.length;
 
-          const currentLine = `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}<span class='tree-content ${child.type}'>${formattedText}</span></div>`;
+          // Add level-specific class for headers
+          const levelClass =
+            child.type === "header" ? ` header-${child.level}` : "";
+
+          const currentLine = `<div class='tree-line' style='text-indent: -${textStartPosition}ch; padding-left: ${textStartPosition}ch;'>${linePrefix}<span class='tree-content ${child.type}${levelClass}'>${formattedText}</span></div>`;
 
           const childrenHtml = this.renderTree(
             child,

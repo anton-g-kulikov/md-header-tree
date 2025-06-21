@@ -47,10 +47,10 @@ Instead of relying on built-in problem matcher references, we now define our own
   "background": {
     "activeOnStart": true,
     "beginsPattern": {
-      "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\."
+      "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Starting compilation in watch mode\\.\\.\\."
     },
     "endsPattern": {
-      "regexp": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - (?:Found \\d+ errors?\\. Watching for file changes\\.|Compilation complete\\. Watching for file changes\\.)"
+      "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Found \\d+ errors?\\. Watching for file changes\\."
     }
   }
 }
@@ -73,3 +73,46 @@ Instead of relying on built-in problem matcher references, we now define our own
 ## Testing
 
 All tasks now work without errors and properly integrate with VS Code's problem reporting system. TypeScript compilation errors will appear in the Problems panel with clickable links to the source locations.
+
+## Debug Task Issue Fix (June 2025)
+
+### Problem
+
+The debug sessions were hanging indefinitely with "Waiting for preLaunchTask 'npm: watch'..." message because the background task regex patterns weren't matching the actual TypeScript compiler output.
+
+### Root Cause
+
+The `beginsPattern` and `endsPattern` regex in the problem matcher were expecting different time formats and messages than what `tsc -watch` actually outputs:
+
+**Expected (old):**
+
+```
+- File change detected. Starting incremental compilation...
+- Found X errors. Watching for file changes.
+```
+
+**Actual TypeScript output:**
+
+```
+[5:31:00 PM] Starting compilation in watch mode...
+[5:31:01 PM] Found 0 errors. Watching for file changes.
+```
+
+### Solution
+
+Updated the regex patterns in both "npm: watch" and "tsc: watch" tasks:
+
+```json
+"beginsPattern": {
+  "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Starting compilation in watch mode\\.\\.\\."
+},
+"endsPattern": {
+  "regexp": "^\\[\\d{1,2}:\\d{1,2}:\\d{1,2} (?:AM|PM)\\] Found \\d+ errors?\\. Watching for file changes\\."
+}
+```
+
+### Result
+
+- Debug sessions now start properly without indefinite waiting
+- Background tasks correctly signal completion
+- VS Code properly detects when TypeScript compilation is finished

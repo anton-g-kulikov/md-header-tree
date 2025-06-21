@@ -37,6 +37,14 @@ export class ConfigurationManager {
         lineHeight: config.get("styling.lineHeight", 1.6),
         padding: config.get("styling.padding", "4em"),
       },
+      headerStyling: {
+        h1FontWeight: config.get("headerStyling.h1FontWeight", "600"),
+        h2FontWeight: config.get("headerStyling.h2FontWeight", "600"),
+        h3FontWeight: config.get("headerStyling.h3FontWeight", "400"),
+        h4FontWeight: config.get("headerStyling.h4FontWeight", "400"),
+        h5FontWeight: config.get("headerStyling.h5FontWeight", "400"),
+        h6FontWeight: config.get("headerStyling.h6FontWeight", "400"),
+      },
     };
   }
 

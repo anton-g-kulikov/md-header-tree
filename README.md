@@ -1,7 +1,7 @@
 # Markdown Hierarchy Viewer
 
 [![VS Code Extension](https://img.shields.io/badge/VS%20Code-Extension-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=Tony-g-K.markdown-hierarchy-viewer)
-[![Version](https://img.shields.io/badge/version-1.1.1-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
+[![Version](https://img.shields.io/badge/version-1.2.0-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A VS Code extension that transforms your Markdown documents into beautiful, live hierarchical structures.
@@ -16,6 +16,7 @@ _Live tree visualization showing the structure of a Markdown document with real-
 - **⚡ Real-time Updates**: Instant preview updates as you edit (debounced for performance)
 - **🎨 Typography**: Noto Sans for content with perfectly aligned monospace tree symbols
 - **🎯 Markdown Formatting**: Renders **bold**, _italic_, and `code` formatting within the tree
+- **🎨 Customizable Header Styling**: Configure individual font weights for each header level (H1-H6)
 - **🔧 Fully Customizable**: Configure colors, fonts, symbols, and styling to match your preferences
 - **🛡️ Secure & Robust**: Built with XSS protection, error handling, and memory management
 
@@ -83,7 +84,44 @@ Customize the extension through VS Code settings (`Cmd+,` → search for "Markdo
 
   // Layout
   "markdownHierarchyViewer.styling.lineHeight": 1.6,
-  "markdownHierarchyViewer.styling.padding": "4em"
+  "markdownHierarchyViewer.styling.padding": "4em",
+
+  // Header Font Weights (customize visual hierarchy)
+  "markdownHierarchyViewer.headerStyling.h1FontWeight": "600", // Bold
+  "markdownHierarchyViewer.headerStyling.h2FontWeight": "600", // Bold
+  "markdownHierarchyViewer.headerStyling.h3FontWeight": "400", // Normal
+  "markdownHierarchyViewer.headerStyling.h4FontWeight": "400", // Normal
+  "markdownHierarchyViewer.headerStyling.h5FontWeight": "400", // Normal
+  "markdownHierarchyViewer.headerStyling.h6FontWeight": "400" // Normal
+}
+```
+
+### 🎨 Header Styling Customization
+
+By default, the extension uses **bold font weight** for main headers (H1, H2) and **normal font weight** for sub-headers (H3-H6) to create a clear visual hierarchy. You can customize the font weight for each header level individually:
+
+**Common font weight values:**
+
+- `"100"` - Thin
+- `"200"` - Extra Light
+- `"300"` - Light
+- `"400"` - Normal (default for H3-H6)
+- `"500"` - Medium
+- `"600"` - Semi Bold (default for H1-H2)
+- `"700"` - Bold
+- `"800"` - Extra Bold
+- `"900"` - Black
+
+**Example: Make all headers progressively lighter**
+
+```json
+{
+  "markdownHierarchyViewer.headerStyling.h1FontWeight": "700",
+  "markdownHierarchyViewer.headerStyling.h2FontWeight": "600",
+  "markdownHierarchyViewer.headerStyling.h3FontWeight": "500",
+  "markdownHierarchyViewer.headerStyling.h4FontWeight": "400",
+  "markdownHierarchyViewer.headerStyling.h5FontWeight": "300",
+  "markdownHierarchyViewer.headerStyling.h6FontWeight": "200"
 }
 ```
 
