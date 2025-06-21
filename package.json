@@ -9,9 +9,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:markdown-ascii-tree.showAsciiTree"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
