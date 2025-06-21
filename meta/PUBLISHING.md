@@ -21,15 +21,23 @@ This guide explains how to publish the Markdown Hierarchy Viewer extension to th
    - Change `publisher` field from "your-publisher-name" to your actual publisher name
    - Update repository URLs if hosting on GitHub
    - Ensure version number is correct
+   - **ADD ICON**: Add `"icon": "icon.png"` property (REQUIRED)
 
-2. **Test the extension**:
+2. **Create Required Files**:
+
+   - **ICON**: Create `icon.png` (128x128px minimum, PNG format) in root directory
+   - Ensure `LICENSE` file exists
+   - Verify `CHANGELOG.md` is updated
+   - Consider adding `SUPPORT.md` for user support information
+
+3. **Test the extension**:
 
    ```bash
    npm run compile
    npm run lint
    ```
 
-3. **Test in Extension Development Host**:
+4. **Test in Extension Development Host**:
    - Press `F5` in VS Code to launch Extension Development Host
    - Open a Markdown file and test the command "Markdown: Show ASCII Header Tree"
 
@@ -87,10 +95,34 @@ The `.vscodeignore` file excludes development files. The published extension inc
 - `README.md`
 - `CHANGELOG.md`
 - `LICENSE` (if present)
+- **`icon.png`** (REQUIRED - extension icon, 128x128px minimum)
 
 ## Marketing Tips
 
+- **Add an extension icon** (PNG, 128x128px minimum) - REQUIRED for publication
 - Add screenshots to README.md showing the extension in action
-- Use relevant keywords in package.json
+- Use relevant keywords in package.json (max 30 keywords)
 - Write clear, concise descriptions
+- Consider adding `galleryBanner.color` for custom marketplace background
+- Add animated GIFs demonstrating features
 - Respond to user issues and feedback on the marketplace
+
+## 🚨 CRITICAL: Icon Requirement
+
+**Your extension CANNOT be published without an icon!**
+
+1. Create a PNG file named `icon.png` with minimum 128x128 pixels
+2. Place it in the root directory of your project
+3. Add this to your `package.json`:
+   ```json
+   {
+     "icon": "icon.png"
+   }
+   ```
+
+**Icon Design Tips:**
+
+- Use simple, recognizable symbols related to your extension
+- Consider a tree/hierarchy theme for your Markdown viewer
+- Ensure good contrast and visibility at small sizes
+- Follow VS Code's design guidelines for consistency

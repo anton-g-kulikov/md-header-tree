@@ -27,3 +27,7 @@ logs/
 # Keep assets directory but ignore temporary files
 assets/*.tmp
 assets/*.temp
+
+# Sensitive information
+.env
+.secrets

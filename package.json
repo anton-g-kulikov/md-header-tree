@@ -1,9 +1,9 @@
 {
   "name": "markdown-hierarchy-viewer",
   "displayName": "Markdown Hierarchy Viewer",
-  "description": "Beautiful live tree visualization for Markdown files with headers, lists, paragraphs, and real-time updates. Features elegant typography and intuitive document structure preview.",
-  "version": "1.0.1",
-  "publisher": "your-publisher-name",
+  "description": "Beautiful hierarchical visualization for Markdown files with real-time updates",
+  "version": "1.0.2",
+  "publisher": "Tony-g-K",
   "repository": {
     "type": "git",
     "url": "https://github.com/anton-g-kulikov/markdown-hierarchy-viewer"
@@ -13,6 +13,11 @@
   },
   "homepage": "https://github.com/anton-g-kulikov/markdown-hierarchy-viewer#readme",
   "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#2E3440",
+    "theme": "dark"
+  },
   "keywords": [
     "markdown",
     "tree",
@@ -28,7 +33,7 @@
     "viewer"
   ],
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.101.0"
   },
   "categories": [
     "Visualization",

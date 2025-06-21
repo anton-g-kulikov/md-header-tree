@@ -2,6 +2,23 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.0.2] - 2025-06-21
+
+### 🚀 Publishing Ready
+
+- **📦 Marketplace Preparation**: Extension is now ready for VS Code Marketplace publication
+  - Added extension icon (icon.png) for marketplace visibility
+  - Configured gallery banner with dark theme color (#2E3440)
+  - Created comprehensive SUPPORT.md for user assistance
+  - Updated VS Code engine requirement to ^1.101.0 for latest API compatibility
+- **📚 Documentation Enhancements**: Improved project documentation and publishing guidelines
+  - Added detailed publishing checklist and guidelines
+  - Enhanced README with accurate version information
+  - Comprehensive support documentation with troubleshooting guides
+- **🔧 Configuration Improvements**: Enhanced marketplace presentation
+  - Professional gallery banner configuration
+  - Optimized extension metadata for better discoverability
+
 ## [1.0.1] - 2025-06-21
 
 ### 🔧 Improvements
