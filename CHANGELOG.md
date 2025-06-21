@@ -1,6 +1,57 @@
 # Change Log
 
-All notable changes to the "markdown-ascii-tree" extension will be documented in this file.
+All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
+
+## [2.0.0] - 2025-06-21
+
+### 🚀 Major Refactoring - Professional Architecture
+
+#### Added
+
+- **Modular Architecture**: Separated code into logical modules for maintainability
+- **TypeScript Interfaces**: Comprehensive type definitions for all data structures
+- **Configuration System**: User-customizable settings for colors, fonts, and symbols
+- **Professional Logging**: Structured logging with output channel integration
+- **Error Handling**: Robust error handling with graceful degradation
+- **Memory Management**: Proper cleanup and disposal of resources
+- **Security**: Content Security Policy and XSS prevention
+- **Unit Tests**: Test coverage for core functionality
+- **Additional Commands**: Refresh and show logs commands
+- **Development Documentation**: Comprehensive architecture and development guides
+- **Code Block Support**: Full support for fenced (```) and indented code blocks with proper content preservation and styling
+
+#### Improved
+
+- **Performance**: Debounced updates and efficient parsing algorithms
+- **Code Quality**: ESLint passing, proper TypeScript usage
+- **Extensibility**: Easy to add new features and configuration options
+- **User Experience**: Better error messages and feedback
+- **Maintainability**: Clean separation of concerns and single responsibility
+- **Parser Robustness**: Code blocks are now properly rendered as preformatted content at correct tree levels, with custom scrollbar styling
+- **Styling Enhancements**: Improved visual presentation with custom scrollbars and better code block formatting
+- **Project Organization**: Clean project structure with dedicated test/ and meta/ directories
+
+#### Technical Improvements
+
+- Separated CSS from JavaScript logic
+- Implemented proper dependency injection
+- Added configuration hot-reloading
+- Improved tree rendering with better error handling
+- Enhanced webview lifecycle management
+- Added proper TypeScript type checking
+- Organized project files into logical directories
+- Fixed code block parsing to prevent recursive parsing of examples
+
+#### Fixed
+
+- **Code Block Recursion**: Fixed issue where ASCII tree examples in README were being parsed as actual structure
+- **Memory Leaks**: Proper cleanup of event listeners and disposables
+- **Test Environment**: Logger now works properly in test environment
+
+### Breaking Changes
+
+- Extension now requires VS Code 1.74.0 or higher
+- Configuration structure has changed (automatic migration)
 
 ## [1.2.0] - 2025-06-21
 

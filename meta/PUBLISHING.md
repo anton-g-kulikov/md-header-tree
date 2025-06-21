@@ -1,6 +1,6 @@
 # Publishing Guide
 
-This guide explains how to publish the Markdown ASCII Tree extension to the VS Code Marketplace.
+This guide explains how to publish the Markdown Hierarchy Viewer extension to the VS Code Marketplace.
 
 ## Prerequisites
 
@@ -59,7 +59,7 @@ This guide explains how to publish the Markdown ASCII Tree extension to the VS C
 1. The extension will be available in the VS Code Marketplace within a few minutes
 2. Users can install it via:
    - VS Code Extensions view (Ctrl/Cmd+Shift+X)
-   - Command line: `code --install-extension your-publisher.markdown-ascii-tree`
+   - Command line: `code --install-extension your-publisher.markdown-hierarchy-viewer`
 
 ## Version Updates
 
@@ -76,7 +76,7 @@ For future updates:
 - `vsce publish patch` - Auto-increment patch version and publish
 - `vsce publish minor` - Auto-increment minor version and publish
 - `vsce publish major` - Auto-increment major version and publish
-- `vsce unpublish your-publisher.markdown-ascii-tree` - Remove from marketplace
+- `vsce unpublish your-publisher.markdown-hierarchy-viewer` - Remove from marketplace
 
 ## Files Included in Package
 

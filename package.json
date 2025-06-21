@@ -1,30 +1,31 @@
 {
-  "name": "markdown-ascii-tree",
-  "displayName": "Markdown ASCII Tree",
-  "description": "Beautiful live ASCII tree visualization for Markdown files with headers, lists, paragraphs, and real-time updates. Features Noto Sans typography and subtle gray tree symbols.",
-  "version": "1.2.0",
+  "name": "markdown-hierarchy-viewer",
+  "displayName": "Markdown Hierarchy Viewer",
+  "description": "Beautiful live tree visualization for Markdown files with headers, lists, paragraphs, and real-time updates. Features elegant typography and intuitive document structure preview.",
+  "version": "2.0.0",
   "publisher": "your-publisher-name",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/markdown-ascii-tree"
+    "url": "https://github.com/your-username/markdown-hierarchy-viewer"
   },
   "bugs": {
-    "url": "https://github.com/your-username/markdown-ascii-tree/issues"
+    "url": "https://github.com/your-username/markdown-hierarchy-viewer/issues"
   },
-  "homepage": "https://github.com/your-username/markdown-ascii-tree#readme",
+  "homepage": "https://github.com/your-username/markdown-hierarchy-viewer#readme",
   "license": "MIT",
   "keywords": [
     "markdown",
     "tree",
+    "hierarchy",
     "outline",
     "headers",
     "structure",
-    "ascii",
     "preview",
     "visualization",
     "toc",
     "table-of-contents",
-    "document-structure"
+    "document-structure",
+    "viewer"
   ],
   "engines": {
     "vscode": "^1.74.0"
@@ -40,19 +41,94 @@
   "contributes": {
     "commands": [
       {
-        "command": "markdown-ascii-tree.showAsciiTree",
-        "title": "Markdown: Show ASCII Header Tree",
+        "command": "markdown-hierarchy-viewer.showTree",
+        "title": "Markdown: Show Header Tree",
         "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-hierarchy-viewer.refresh",
+        "title": "Markdown: Refresh Tree",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-hierarchy-viewer.showLogs",
+        "title": "Markdown Hierarchy Viewer: Show Logs"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "command": "markdown-ascii-tree.showAsciiTree",
+          "command": "markdown-hierarchy-viewer.showTree",
           "when": "resourceExtname == .md",
           "group": "navigation"
         }
+      ],
+      "commandPalette": [
+        {
+          "command": "markdown-hierarchy-viewer.refresh",
+          "when": "editorLangId == markdown"
+        }
       ]
+    },
+    "configuration": {
+      "title": "Markdown Hierarchy Viewer",
+      "properties": {
+        "markdownHierarchyViewer.treeSymbols.branch": {
+          "type": "string",
+          "default": "├──",
+          "description": "Symbol used for branch connections in the tree"
+        },
+        "markdownHierarchyViewer.treeSymbols.last": {
+          "type": "string",
+          "default": "└──",
+          "description": "Symbol used for the last item in a branch"
+        },
+        "markdownHierarchyViewer.treeSymbols.vertical": {
+          "type": "string",
+          "default": "│",
+          "description": "Symbol used for vertical connections"
+        },
+        "markdownHierarchyViewer.treeSymbols.space": {
+          "type": "string",
+          "default": "   ",
+          "description": "Spacing used for indentation"
+        },
+        "markdownHierarchyViewer.colors.treeSymbols": {
+          "type": "string",
+          "default": "rgb(200, 200, 200)",
+          "description": "Color for tree symbols (CSS color value)"
+        },
+        "markdownHierarchyViewer.colors.content": {
+          "type": "string",
+          "default": "rgb(0, 0, 0)",
+          "description": "Color for content text (CSS color value)"
+        },
+        "markdownHierarchyViewer.colors.background": {
+          "type": "string",
+          "default": "rgb(246, 246, 246)",
+          "description": "Background color for the preview (CSS color value)"
+        },
+        "markdownHierarchyViewer.fonts.content": {
+          "type": "string",
+          "default": "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+          "description": "Font family for content text"
+        },
+        "markdownHierarchyViewer.fonts.treeSymbols": {
+          "type": "string",
+          "default": "'SF Mono', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
+          "description": "Font family for tree symbols (should be monospace)"
+        },
+        "markdownHierarchyViewer.styling.lineHeight": {
+          "type": "number",
+          "default": 1.6,
+          "description": "Line height for the preview content"
+        },
+        "markdownHierarchyViewer.styling.padding": {
+          "type": "string",
+          "default": "4em",
+          "description": "Padding around the preview content"
+        }
+      }
     }
   },
   "scripts": {
