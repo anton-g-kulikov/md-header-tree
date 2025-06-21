@@ -5,6 +5,7 @@
 import * as vscode from "vscode";
 import { WebviewManager } from "./webviewManager";
 import { Logger } from "./logger";
+import { isMarkdownFile } from "./fileDetection";
 
 export class CommandManager {
   private webviewManager: WebviewManager;
@@ -31,10 +32,16 @@ export class CommandManager {
       this.handleShowLogs.bind(this)
     );
 
+    const forceMarkdownModeCommand = vscode.commands.registerCommand(
+      "markdown-hierarchy-viewer.forceMarkdownMode",
+      this.handleForceMarkdownMode.bind(this)
+    );
+
     context.subscriptions.push(
       showTreeCommand,
       refreshCommand,
-      showLogsCommand
+      showLogsCommand,
+      forceMarkdownModeCommand
     );
     Logger.info("Commands registered successfully");
   }
@@ -52,9 +59,9 @@ export class CommandManager {
 
       const document = editor.document;
 
-      if (document.languageId !== "markdown") {
+      if (!isMarkdownFile(document)) {
         vscode.window.showErrorMessage(
-          "Active file is not a Markdown file. Please open a .md file."
+          "Active file is not recognized as a Markdown file. Please open a Markdown file (.md, .markdown, etc.) or check if the file content is valid Markdown."
         );
         return;
       }
@@ -72,7 +79,7 @@ export class CommandManager {
     try {
       const editor = vscode.window.activeTextEditor;
 
-      if (!editor || editor.document.languageId !== "markdown") {
+      if (!editor || !isMarkdownFile(editor.document)) {
         vscode.window.showInformationMessage(
           "Please open a Markdown file to refresh the tree view."
         );
@@ -96,6 +103,34 @@ export class CommandManager {
 
   private handleShowLogs(): void {
     Logger.show();
+  }
+
+  private async handleForceMarkdownMode(): Promise<void> {
+    try {
+      const editor = vscode.window.activeTextEditor;
+
+      if (!editor) {
+        vscode.window.showErrorMessage("No active editor found.");
+        return;
+      }
+
+      // Set language mode to markdown
+      await vscode.languages.setTextDocumentLanguage(
+        editor.document,
+        "markdown"
+      );
+
+      vscode.window.showInformationMessage(
+        `Language mode set to Markdown for "${editor.document.fileName}". You can now use the hierarchy viewer.`
+      );
+
+      Logger.info(
+        `Forced Markdown language mode for: ${editor.document.fileName}`
+      );
+    } catch (error) {
+      Logger.error("Error forcing Markdown mode", error as Error);
+      vscode.window.showErrorMessage("Failed to set Markdown language mode.");
+    }
   }
 
   public dispose(): void {

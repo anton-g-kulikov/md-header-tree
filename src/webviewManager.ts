@@ -8,6 +8,7 @@ import { TreeRenderer } from "./treeRenderer";
 import { MarkdownParser } from "./markdownParser";
 import { ConfigurationManager } from "./configuration";
 import { Logger } from "./logger";
+import { isMarkdownFile } from "./fileDetection";
 
 export class WebviewManager {
   private panel: vscode.WebviewPanel | undefined;
@@ -18,8 +19,8 @@ export class WebviewManager {
   public async showPreview(document: vscode.TextDocument): Promise<void> {
     try {
       // Validate document
-      if (document.languageId !== "markdown") {
-        throw new Error("Active file is not a Markdown file.");
+      if (!isMarkdownFile(document)) {
+        throw new Error("Active file is not recognized as a Markdown file.");
       }
 
       // Create or reveal panel
@@ -40,7 +41,9 @@ export class WebviewManager {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
       Logger.error("Failed to show preview", error as Error);
-      vscode.window.showErrorMessage(`Markdown Hierarchy Viewer: ${errorMessage}`);
+      vscode.window.showErrorMessage(
+        `Markdown Hierarchy Viewer: ${errorMessage}`
+      );
     }
   }
 
@@ -69,7 +72,7 @@ export class WebviewManager {
     const configDisposable = ConfigurationManager.onConfigurationChange(() => {
       if (this.panel) {
         const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.languageId === "markdown") {
+        if (editor && isMarkdownFile(editor.document)) {
           this.updateContent(editor.document.getText());
         }
       }

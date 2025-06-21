@@ -1,7 +1,7 @@
 # Markdown Hierarchy Viewer
 
-[![VS Code Extension](https://img.shields.io/badge/VS%20Code-Extension-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=your-publisher.markdown-hierarchy-viewer)
-[![Version](https://img.shields.io/badge/version-1.0.2-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
+[![VS Code Extension](https://img.shields.io/badge/VS%20Code-Extension-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=Tony-g-K.markdown-hierarchy-viewer)
+[![Version](https://img.shields.io/badge/version-1.1.0-green)](https://github.com/anton-g-kulikov/markdown-hierarchy-viewer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A VS Code extension that transforms your Markdown documents into beautiful, live hierarchical structures.
@@ -52,7 +52,7 @@ _Live tree visualization showing the structure of a Markdown document with real-
 ### From Command Line
 
 ```bash
-code --install-extension your-publisher.markdown-hierarchy-viewer
+code --install-extension Tony-g-K.markdown-hierarchy-viewer
 ```
 
 ### Quick Start
@@ -91,7 +91,35 @@ Customize the extension through VS Code settings (`Cmd+,` → search for "Markdo
 
 - **Markdown: Show Hierarchy Viewer** - Open the tree preview
 - **Markdown: Refresh Hierarchy Viewer** - Refresh the current preview
+- **Markdown: Force Markdown Language Mode** - Manually set file to Markdown mode if not automatically detected
 - **Markdown Hierarchy Viewer: Show Logs** - View extension logs for debugging
+
+## 📁 File Support
+
+The extension automatically detects Markdown files with the following extensions:
+
+- `.md` (primary)
+- `.markdown`
+- `.mdown`
+- `.mkd`
+- `.mdwn`
+- `.mdtxt`
+- `.mdtext`
+- `.text`
+
+### Troubleshooting File Recognition
+
+If your Markdown file isn't being recognized:
+
+1. **Check the file extension** - Use a supported Markdown extension
+2. **Use Force Markdown Mode** - Run "Markdown: Force Markdown Language Mode" from Command Palette
+3. **Content-based detection** - For files without extensions, the extension analyzes content for Markdown patterns
+4. **VS Code file associations** - Add custom file associations in VS Code settings:
+   ```json
+   "files.associations": {
+     "*.custom": "markdown"
+   }
+   ```
 
 ## 🤝 Contributing
 

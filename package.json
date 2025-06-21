@@ -2,7 +2,7 @@
   "name": "markdown-hierarchy-viewer",
   "displayName": "Markdown Hierarchy Viewer",
   "description": "Beautiful hierarchical visualization for Markdown files with real-time updates",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "publisher": "Tony-g-K",
   "repository": {
     "type": "git",
@@ -40,7 +40,11 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onFileSystem:*.md",
+    "onFileSystem:*.markdown",
+    "onFileSystem:*.mdown",
+    "onFileSystem:*.mkd"
   ],
   "main": "./out/src/extension.js",
   "contributes": {
@@ -58,13 +62,18 @@
       {
         "command": "markdown-hierarchy-viewer.showLogs",
         "title": "Markdown Hierarchy Viewer: Show Logs"
+      },
+      {
+        "command": "markdown-hierarchy-viewer.forceMarkdownMode",
+        "title": "Markdown: Force Markdown Language Mode",
+        "when": "editorFocus"
       }
     ],
     "menus": {
       "editor/title": [
         {
           "command": "markdown-hierarchy-viewer.showTree",
-          "when": "resourceExtname == .md",
+          "when": "resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .mdown || resourceExtname == .mkd",
           "group": "navigation"
         }
       ],

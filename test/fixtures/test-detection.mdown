@@ -1,0 +1,17 @@
+# Alternative Extension Test
+
+This file uses .mdown extension.
+
+## Features
+
+- Should be detected by enhanced file detection
+- Works with multiple extensions
+- Content-based fallback available
+
+## Code Example
+
+```bash
+echo "testing mdown files"
+```
+
+End of test file.

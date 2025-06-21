@@ -2,6 +2,24 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.1.0] - 2025-06-21
+
+### 🔍 Enhanced File Detection
+
+- **📁 Expanded File Support**: Added support for multiple Markdown file extensions
+  - Now supports `.md`, `.markdown`, `.mdown`, `.mkd`, `.mdwn`, `.mdtxt`, `.mdtext`, `.text`
+  - Content-based detection for files without proper extensions
+  - Improved activation events to handle various Markdown file patterns
+- **🛠️ Better File Recognition**: Enhanced file detection logic
+  - New `fileDetection.ts` module with intelligent Markdown content analysis
+  - Fallback detection for edge cases where VS Code doesn't properly identify Markdown files
+  - Analysis of Markdown patterns (headers, lists, code blocks, links, emphasis)
+- **⚡ New Commands**: Added utility command for troubleshooting
+  - "Markdown: Force Markdown Language Mode" - Manually set files to Markdown mode
+  - Improved error messages with more helpful guidance
+- **🎯 Menu Improvements**: Updated editor menu conditions to support all Markdown extensions
+- **📖 Documentation**: Updated README and project documentation with troubleshooting guide
+
 ## [1.0.2] - 2025-06-21
 
 ### 🚀 Publishing Ready
