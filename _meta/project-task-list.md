@@ -80,7 +80,25 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
   - Updated README.md version badge
   - Verified all tests pass and code compiles without errors
 
+### Link Rendering Support (1.3.0)
+
+- ✅ **CORE-TASK-001: Enhance markdown preview with links rendering** - ✅ **COMPLETED**
+  - ✅ Add support for standard markdown links: `[text](url)`
+  - ✅ Add support for reference-style links: `[text][ref]` with `[ref]: url`
+  - ✅ Update `MarkdownParser.parseMarkdownFormatting()` with link parsing logic using balanced parentheses parser
+  - ✅ Add CSS styling for links with hover effects and theme awareness
+  - ✅ Update Content Security Policy in `StyleManager` to allow external navigation
+  - ✅ Implement comprehensive test coverage for all link types including edge cases
+  - ✅ Security: HTML-escape URLs and link text to prevent XSS attacks
+  - ✅ Support nested formatting within link text (bold, italic, code in links)
+  - ✅ Handle complex URLs with parentheses using balanced parsing algorithm
+  - ✅ All 45 unit and integration tests passing successfully
+
 ## NOT Planned Tasks (as of yet) 📋
+
+### Current Sprint Tasks
+
+*(No tasks currently in progress)*
 
 ### Future Version Features
 

@@ -145,6 +145,29 @@ export class StyleManager {
         font-size: inherit;
       }
       
+      /* Link styling */
+      a {
+        color: #007acc;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: all 0.2s ease;
+      }
+      
+      a:hover {
+        color: #005a9e;
+        border-bottom-color: #007acc;
+        text-decoration: none;
+      }
+      
+      a:visited {
+        color: #6f42c1;
+      }
+      
+      a:visited:hover {
+        color: #5a2d91;
+        border-bottom-color: #6f42c1;
+      }
+      
       /* Error message styling */
       .error-message {
         color: #e74c3c;

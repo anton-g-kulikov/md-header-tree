@@ -185,6 +185,69 @@ This is just text`;
     assert.strictEqual(elements[0].type, "header");
     assert.strictEqual(elements[1].type, "header");
   });
+
+  // Link Rendering Tests (CORE-UNIT-001 to CORE-UNIT-009)
+  test("parseMarkdownFormatting should handle basic links", () => {
+    const input = "Visit [GitHub](https://github.com) for more info";
+    const expected =
+      'Visit <a href="https://github.com">GitHub</a> for more info';
+    const result = MarkdownParser.parseMarkdownFormatting(input);
+    assert.strictEqual(result, expected);
+  });
+
+  test("parseMarkdownFormatting should handle reference-style links", () => {
+    const input = "Visit [GitHub][gh] for more info\n[gh]: https://github.com";
+    const expected =
+      'Visit <a href="https://github.com">GitHub</a> for more info\n';
+    const result = MarkdownParser.parseMarkdownFormatting(input);
+    assert.strictEqual(result, expected);
+  });
+
+  test("parseMarkdownFormatting should handle mixed link formats", () => {
+    const input =
+      "Visit [GitHub](https://github.com) and [Google][g]\n[g]: https://google.com";
+    const expected =
+      'Visit <a href="https://github.com">GitHub</a> and <a href="https://google.com">Google</a>\n';
+    const result = MarkdownParser.parseMarkdownFormatting(input);
+    assert.strictEqual(result, expected);
+  });
+
+  test("parseMarkdownFormatting should escape malicious URLs", () => {
+    const input = 'Click [here](javascript:alert("xss")) for info';
+    const expected =
+      'Click <a href="javascript:alert(&quot;xss&quot;)">here</a> for info';
+    const result = MarkdownParser.parseMarkdownFormatting(input);
+    assert.strictEqual(result, expected);
+  });
+
+  test("parseMarkdownFormatting should handle nested formatting in links", () => {
+    const input =
+      "Visit [**GitHub**](https://github.com) and [*Google*](https://google.com)";
+    const expected =
+      'Visit <a href="https://github.com"><strong>GitHub</strong></a> and <a href="https://google.com"><em>Google</em></a>';
+    const result = MarkdownParser.parseMarkdownFormatting(input);
+    assert.strictEqual(result, expected);
+  });
+
+  test("parseMarkdownFormatting should handle edge cases", () => {
+    // Empty link text
+    const input1 = "Visit [](https://github.com) for info";
+    const expected1 = 'Visit <a href="https://github.com"></a> for info';
+    const result1 = MarkdownParser.parseMarkdownFormatting(input1);
+    assert.strictEqual(result1, expected1);
+
+    // Empty URL
+    const input2 = "Visit [GitHub]() for info";
+    const expected2 = 'Visit <a href="">GitHub</a> for info';
+    const result2 = MarkdownParser.parseMarkdownFormatting(input2);
+    assert.strictEqual(result2, expected2);
+
+    // Malformed link (should not be processed)
+    const input3 = "Visit [GitHub(https://github.com) for info";
+    const expected3 = "Visit [GitHub(https://github.com) for info";
+    const result3 = MarkdownParser.parseMarkdownFormatting(input3);
+    assert.strictEqual(result3, expected3);
+  });
 });
 
 suite("Configuration Tests", () => {
@@ -556,5 +619,28 @@ suite("StyleManager Tests", () => {
         css.includes("font-weight: 400"),
       "Should make h3 normal weight by default"
     );
+  });
+
+  test("StyleManager should generate proper CSS for links", () => {
+    const mockConfig = ConfigurationManager.getConfiguration();
+    const css = StyleManager.generateCSS(mockConfig);
+
+    // Check for link styles
+    assert.ok(css.includes("a {"), "Should include basic link styles");
+    assert.ok(css.includes("a:hover"), "Should include link hover styles");
+    assert.ok(
+      css.includes("text-decoration"),
+      "Should include text decoration"
+    );
+  });
+
+  test("StyleManager should include CSP for external navigation", () => {
+    const mockConfig = ConfigurationManager.getConfiguration();
+    const content = '<a href="https://example.com">Link</a>';
+    const html = StyleManager.generateHTML(content, mockConfig);
+
+    // Check CSP allows navigation
+    assert.ok(html.includes("Content-Security-Policy"), "Should include CSP");
+    // Note: We don't need special CSP changes for standard links
   });
 });

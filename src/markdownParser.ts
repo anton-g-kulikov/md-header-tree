@@ -15,7 +15,117 @@ export class MarkdownParser {
 
   static parseMarkdownFormatting(text: string): string {
     try {
-      // Escape HTML first to prevent XSS
+      // Handle reference-style links first
+      // Find all reference definitions and store them
+      const linkRefs: { [key: string]: string } = {};
+      text = text.replace(
+        /^\s*\[([^\]]+)\]:\s*(.+)$/gm,
+        (match, label, url) => {
+          linkRefs[label.toLowerCase()] = url.trim();
+          return ""; // Remove the reference definition from text
+        }
+      );
+
+      // Create a temporary placeholder system to preserve link HTML
+      const linkPlaceholders: string[] = [];
+
+      // Convert reference-style links [text][ref] to placeholder
+      text = text.replace(
+        /\[([^\]]*)\]\[([^\]]+)\]/g,
+        (match, linkText, refLabel) => {
+          const url = linkRefs[refLabel.toLowerCase()];
+          if (url) {
+            // Process formatting in link text first, then escape URL
+            const formattedText = this.processInlineFormatting(linkText);
+            const escapedUrl = this.escapeHtml(url);
+            const linkHtml = `<a href="${escapedUrl}">${formattedText}</a>`;
+            linkPlaceholders.push(linkHtml);
+            return `LINKPLACEHOLDER${
+              linkPlaceholders.length - 1
+            }LINKPLACEHOLDER`;
+          }
+          return match; // Return original if reference not found
+        }
+      );
+
+      // Convert inline links [text](url) to placeholder
+      // Handle URLs with balanced parentheses
+      const processInlineLinks = (text: string): string => {
+        let result = '';
+        let i = 0;
+        
+        while (i < text.length) {
+          // Look for link text pattern [...]
+          const linkTextStart = text.indexOf('[', i);
+          if (linkTextStart === -1) {
+            result += text.slice(i);
+            break;
+          }
+          
+          // Add text before the link
+          result += text.slice(i, linkTextStart);
+          
+          // Find the closing bracket for link text
+          let linkTextEnd = linkTextStart + 1;
+          let bracketCount = 1;
+          while (linkTextEnd < text.length && bracketCount > 0) {
+            if (text[linkTextEnd] === '[') {
+              bracketCount++;
+            } else if (text[linkTextEnd] === ']') {
+              bracketCount--;
+            }
+            linkTextEnd++;
+          }
+          
+          if (bracketCount > 0 || linkTextEnd >= text.length || text[linkTextEnd] !== '(') {
+            // Not a valid link, continue searching
+            result += text[linkTextStart];
+            i = linkTextStart + 1;
+            continue;
+          }
+          
+          // Extract link text (without brackets)
+          const linkText = text.slice(linkTextStart + 1, linkTextEnd - 1);
+          
+          // Find the closing parenthesis for URL, handling balanced parentheses
+          let urlStart = linkTextEnd + 1;
+          let urlEnd = urlStart;
+          let parenCount = 1;
+          while (urlEnd < text.length && parenCount > 0) {
+            if (text[urlEnd] === '(') {
+              parenCount++;
+            } else if (text[urlEnd] === ')') {
+              parenCount--;
+            }
+            urlEnd++;
+          }
+          
+          if (parenCount > 0) {
+            // No matching closing parenthesis, not a valid link
+            result += text[linkTextStart];
+            i = linkTextStart + 1;
+            continue;
+          }
+          
+          // Extract URL (without parentheses)
+          const url = text.slice(urlStart, urlEnd - 1);
+          
+          // Process formatting in link text first, then escape URL
+          const formattedText = this.processInlineFormatting(linkText);
+          const escapedUrl = this.escapeHtml(url);
+          const linkHtml = `<a href="${escapedUrl}">${formattedText}</a>`;
+          linkPlaceholders.push(linkHtml);
+          result += `LINKPLACEHOLDER${linkPlaceholders.length - 1}LINKPLACEHOLDER`;
+          
+          i = urlEnd;
+        }
+        
+        return result;
+      };
+      
+      text = processInlineLinks(text);
+
+      // Escape HTML to prevent XSS (for remaining text)
       text = text.replace(/[&<>"']/g, (match) => {
         const htmlEscapes: { [key: string]: string } = {
           "&": "&amp;",
@@ -37,6 +147,14 @@ export class MarkdownParser {
 
       // Convert `code` to <code>
       text = text.replace(/`(.*?)`/g, "<code>$1</code>");
+
+      // Restore link placeholders with actual HTML
+      text = text.replace(
+        /LINKPLACEHOLDER(\d+)LINKPLACEHOLDER/g,
+        (match, index) => {
+          return linkPlaceholders[parseInt(index)] || match;
+        }
+      );
 
       return text;
     } catch (error) {
@@ -272,5 +390,36 @@ export class MarkdownParser {
       1 +
       node.children.reduce((count, child) => count + this.countNodes(child), 0)
     );
+  }
+
+  private static escapeHtml(text: string): string {
+    return text.replace(/[&<>"']/g, (match) => {
+      const htmlEscapes: { [key: string]: string } = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      };
+      return htmlEscapes[match];
+    });
+  }
+
+  private static processInlineFormatting(text: string): string {
+    // Escape HTML first
+    text = this.escapeHtml(text);
+
+    // Convert **bold** and __bold__ to <strong>
+    text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    text = text.replace(/__(.*?)__/g, "<strong>$1</strong>");
+
+    // Convert *italic* and _italic_ to <em>
+    text = text.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    text = text.replace(/_(.*?)_/g, "<em>$1</em>");
+
+    // Convert `code` to <code>
+    text = text.replace(/`(.*?)`/g, "<code>$1</code>");
+
+    return text;
   }
 }

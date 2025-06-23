@@ -16,6 +16,7 @@ _Live tree visualization showing the structure of a Markdown document with real-
 - **⚡ Real-time Updates**: Instant preview updates as you edit (debounced for performance)
 - **🎨 Typography**: Noto Sans for content with perfectly aligned monospace tree symbols
 - **🎯 Markdown Formatting**: Renders **bold**, _italic_, and `code` formatting within the tree
+- **🔗 Link Rendering**: Clickable links for `[text](url)` and `[text][ref]` style markdown links with hover effects
 - **🎨 Customizable Header Styling**: Configure individual font weights for each header level (H1-H6)
 - **🔧 Fully Customizable**: Configure colors, fonts, symbols, and styling to match your preferences
 - **🛡️ Secure & Robust**: Built with XSS protection, error handling, and memory management
@@ -33,6 +34,7 @@ _Live tree visualization showing the structure of a Markdown document with real-
    │        └── 2. Test the setup
    ├── Features
    │  ├── Here are the *main features* of our project.
+   │  ├── Visit [GitHub](https://github.com) for source code
    │  ├── Core Features
    │  │  ├── Authentication system
    │  │  └── User management

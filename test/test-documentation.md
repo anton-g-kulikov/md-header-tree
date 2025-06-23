@@ -49,13 +49,19 @@ npm run pretest
 | `StyleManager should include header level-specific styling`  | Test CSS generation for headers   | ✅ Implemented |
 | `StyleManager should create valid HTML structure`            | Test HTML generation              | ✅ Implemented |
 
-#### Configurable Header Styling Tests
+### Link Rendering Tests (Unit Tests)
 
-| Test Case Name                                               | Purpose                           | Status         |
-| ------------------------------------------------------------ | --------------------------------- | -------------- |
-| `ConfigurationManager should include header styling options` | Test header weight config options | ✅ Implemented |
-| `StyleManager should respect header weight configuration`    | Test config-driven CSS generation | ✅ Implemented |
-| `StyleManager should handle default header weight values`    | Test custom font weight values    | ✅ Implemented |
+| Test Case ID  | Description                                                      | Type | Status      |
+| :------------ | :--------------------------------------------------------------- | :--- | :---------- |
+| CORE-UNIT-001 | parseMarkdownFormatting should handle basic links                | Unit | Not Started |
+| CORE-UNIT-002 | parseMarkdownFormatting should handle reference-style links      | Unit | Not Started |
+| CORE-UNIT-003 | parseMarkdownFormatting should handle mixed link formats         | Unit | Not Started |
+| CORE-UNIT-004 | parseMarkdownFormatting should escape malicious URLs             | Unit | Not Started |
+| CORE-UNIT-005 | parseMarkdownFormatting should handle nested formatting in links | Unit | Not Started |
+| CORE-UNIT-006 | StyleManager should generate proper CSS for links                | Unit | Not Started |
+| CORE-UNIT-007 | StyleManager should include CSP for external navigation          | Unit | Not Started |
+| CORE-UNIT-008 | TreeRenderer should render links with standard behavior          | Unit | Not Started |
+| CORE-UNIT-009 | parseMarkdownFormatting should handle edge cases                 | Unit | Not Started |
 
 ### Integration Tests (extension.test.ts)
 

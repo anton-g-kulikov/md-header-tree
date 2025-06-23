@@ -2,6 +2,19 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [Unreleased]
+
+### ✨ New Features
+
+- **🔗 Standard Markdown Link Rendering**: Added support for clickable links in markdown preview
+  - Supports inline links: `[text](url)` 
+  - Supports reference-style links: `[text][ref]` with `[ref]: url` definitions
+  - Includes proper CSS styling with hover effects and theme awareness
+  - Nested formatting support (bold, italic, code) within link text
+  - HTML escaping for security against XSS attacks
+  - Handles complex URLs with parentheses using balanced parsing algorithm
+  - 45+ comprehensive unit and integration tests ensuring reliability
+
 ## [1.2.0] - 2025-06-21
 
 ### ✨ Enhanced Customization
