@@ -98,7 +98,7 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
 
 ### Current Sprint Tasks
 
-*(No tasks currently in progress)*
+_(No tasks currently in progress)_
 
 ### Future Version Features
 

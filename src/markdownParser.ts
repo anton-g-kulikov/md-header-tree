@@ -51,78 +51,84 @@ export class MarkdownParser {
       // Convert inline links [text](url) to placeholder
       // Handle URLs with balanced parentheses
       const processInlineLinks = (text: string): string => {
-        let result = '';
+        let result = "";
         let i = 0;
-        
+
         while (i < text.length) {
           // Look for link text pattern [...]
-          const linkTextStart = text.indexOf('[', i);
+          const linkTextStart = text.indexOf("[", i);
           if (linkTextStart === -1) {
             result += text.slice(i);
             break;
           }
-          
+
           // Add text before the link
           result += text.slice(i, linkTextStart);
-          
+
           // Find the closing bracket for link text
           let linkTextEnd = linkTextStart + 1;
           let bracketCount = 1;
           while (linkTextEnd < text.length && bracketCount > 0) {
-            if (text[linkTextEnd] === '[') {
+            if (text[linkTextEnd] === "[") {
               bracketCount++;
-            } else if (text[linkTextEnd] === ']') {
+            } else if (text[linkTextEnd] === "]") {
               bracketCount--;
             }
             linkTextEnd++;
           }
-          
-          if (bracketCount > 0 || linkTextEnd >= text.length || text[linkTextEnd] !== '(') {
+
+          if (
+            bracketCount > 0 ||
+            linkTextEnd >= text.length ||
+            text[linkTextEnd] !== "("
+          ) {
             // Not a valid link, continue searching
             result += text[linkTextStart];
             i = linkTextStart + 1;
             continue;
           }
-          
+
           // Extract link text (without brackets)
           const linkText = text.slice(linkTextStart + 1, linkTextEnd - 1);
-          
+
           // Find the closing parenthesis for URL, handling balanced parentheses
           let urlStart = linkTextEnd + 1;
           let urlEnd = urlStart;
           let parenCount = 1;
           while (urlEnd < text.length && parenCount > 0) {
-            if (text[urlEnd] === '(') {
+            if (text[urlEnd] === "(") {
               parenCount++;
-            } else if (text[urlEnd] === ')') {
+            } else if (text[urlEnd] === ")") {
               parenCount--;
             }
             urlEnd++;
           }
-          
+
           if (parenCount > 0) {
             // No matching closing parenthesis, not a valid link
             result += text[linkTextStart];
             i = linkTextStart + 1;
             continue;
           }
-          
+
           // Extract URL (without parentheses)
           const url = text.slice(urlStart, urlEnd - 1);
-          
+
           // Process formatting in link text first, then escape URL
           const formattedText = this.processInlineFormatting(linkText);
           const escapedUrl = this.escapeHtml(url);
           const linkHtml = `<a href="${escapedUrl}">${formattedText}</a>`;
           linkPlaceholders.push(linkHtml);
-          result += `LINKPLACEHOLDER${linkPlaceholders.length - 1}LINKPLACEHOLDER`;
-          
+          result += `LINKPLACEHOLDER${
+            linkPlaceholders.length - 1
+          }LINKPLACEHOLDER`;
+
           i = urlEnd;
         }
-        
+
         return result;
       };
-      
+
       text = processInlineLinks(text);
 
       // Escape HTML to prevent XSS (for remaining text)
