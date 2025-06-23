@@ -39,7 +39,21 @@ This guide explains how to publish the Markdown Hierarchy Viewer extension to th
 
 4. **Test in Extension Development Host**:
    - Press `F5` in VS Code to launch Extension Development Host
-   - Open a Markdown file and test the command "Markdown: Show ASCII Header Tree"
+   - Open a Markdown file and test the command "Markdown: Show Hierarchy Viewer"
+
+5. **Run comprehensive tests**:
+   ```bash
+   npm test
+   ```
+   
+   Ensure all tests pass before publishing.
+
+6. **Verify git status**:
+   ```bash
+   git status
+   ```
+   
+   Ensure all changes are committed and working tree is clean.
 
 ## Publishing Steps
 
@@ -57,7 +71,15 @@ This guide explains how to publish the Markdown Hierarchy Viewer extension to th
 
    This creates a `.vsix` file that you can install locally for testing.
 
-3. **Publish to Marketplace**:
+3. **Create and Push Git Tag**:
+   ```bash
+   git tag v1.x.x
+   git push origin v1.x.x
+   ```
+   
+   This creates a release tag in GitHub for version tracking and release management.
+
+4. **Publish to Marketplace**:
    ```bash
    vsce publish
    ```
@@ -76,7 +98,9 @@ For future updates:
 1. Update the version in `package.json`
 2. Update `CHANGELOG.md` with new features/fixes
 3. Compile and test: `npm run compile && npm run lint`
-4. Publish: `vsce publish`
+4. Commit and push changes: `git add . && git commit -m "chore: bump version to vX.X.X" && git push`
+5. Create and push git tag: `git tag vX.X.X && git push origin vX.X.X`
+6. Publish: `vsce publish`
 
 ## Useful Commands
 
