@@ -228,9 +228,80 @@ export class MarkdownParser {
           continue;
         }
 
-        // Handle indented code blocks (4+ spaces or 1+ tabs at start of line)
+        // Skip empty lines
+        if (!line) {
+          continue;
+        }
+
+        // Check for headers (but not for indented lines which should be code blocks)
+        if (opts.includeHeaders && !originalLine.match(/^    /) && !originalLine.match(/^\t/)) {
+          const headerMatch = line.match(/^(#+)\s+(.*)/);
+          if (headerMatch) {
+            const level = headerMatch[1].length;
+            if (!opts.maxDepth || level <= opts.maxDepth) {
+              currentHeaderLevel = level;
+              elements.push({
+                level: currentHeaderLevel,
+                text: headerMatch[2],
+                type: "header",
+                lineNumber,
+              });
+              continue;
+            }
+          }
+        }
+
+        // Check for list items first, but verify they're not part of code blocks
+        if (opts.includeLists) {
+          const listMatch = originalLine.match(/^(\s*)[-*+]\s+(.*)/);
+          if (listMatch) {
+            // If this line has 4+ spaces, check if it's part of a mixed-content code block
+            const hasHeavyIndent = listMatch[1].length >= 4;
+            const isPartOfCodeBlock =
+              hasHeavyIndent && this.isPartOfMixedCodeBlock(lines, i);
+
+            if (!isPartOfCodeBlock) {
+              const indentLevel = Math.floor(listMatch[1].length / 2);
+              const level = currentHeaderLevel + 1 + indentLevel;
+              if (!opts.maxDepth || level <= opts.maxDepth) {
+                elements.push({
+                  level,
+                  text: listMatch[2],
+                  type: "list",
+                  lineNumber,
+                });
+                continue;
+              }
+            }
+          }
+
+          // Check for numbered lists
+          const numberedListMatch = originalLine.match(/^(\s*)(\d+\.\s+)(.*)/);
+          if (numberedListMatch) {
+            // If this line has 4+ spaces, check if it's part of a mixed-content code block
+            const hasHeavyIndent = numberedListMatch[1].length >= 4;
+            const isPartOfCodeBlock =
+              hasHeavyIndent && this.isPartOfMixedCodeBlock(lines, i);
+
+            if (!isPartOfCodeBlock) {
+              const indentLevel = Math.floor(numberedListMatch[1].length / 2);
+              const level = currentHeaderLevel + 1 + indentLevel;
+              if (!opts.maxDepth || level <= opts.maxDepth) {
+                elements.push({
+                  level,
+                  text: numberedListMatch[2] + numberedListMatch[3],
+                  type: "numbered-list",
+                  lineNumber,
+                });
+                continue;
+              }
+            }
+          }
+        }
+
+        // Handle indented code blocks (only for non-list lines or list lines in code blocks)
         if (originalLine.match(/^    /) || originalLine.match(/^\t/)) {
-          // This is an indented line - collect all consecutive indented lines as a code block
+          // This is an indented line - collect as code block
           const indentedCodeLines = [
             originalLine.substring(originalLine.match(/^\t/) ? 1 : 4),
           ];
@@ -267,63 +338,6 @@ export class MarkdownParser {
 
           i = j - 1; // Skip the processed lines
           continue;
-        }
-
-        // Skip empty lines
-        if (!line) {
-          continue;
-        }
-
-        // Check for headers
-        if (opts.includeHeaders) {
-          const headerMatch = line.match(/^(#+)\s+(.*)/);
-          if (headerMatch) {
-            const level = headerMatch[1].length;
-            if (!opts.maxDepth || level <= opts.maxDepth) {
-              currentHeaderLevel = level;
-              elements.push({
-                level: currentHeaderLevel,
-                text: headerMatch[2],
-                type: "header",
-                lineNumber,
-              });
-              continue;
-            }
-          }
-        }
-
-        // Check for list items
-        if (opts.includeLists) {
-          const listMatch = line.match(/^(\s*)[-*+]\s+(.*)/);
-          if (listMatch) {
-            const indentLevel = Math.floor(listMatch[1].length / 2);
-            const level = currentHeaderLevel + 1 + indentLevel;
-            if (!opts.maxDepth || level <= opts.maxDepth) {
-              elements.push({
-                level,
-                text: listMatch[2],
-                type: "list",
-                lineNumber,
-              });
-              continue;
-            }
-          }
-
-          // Check for numbered lists
-          const numberedListMatch = line.match(/^(\s*)(\d+\.\s+)(.*)/);
-          if (numberedListMatch) {
-            const indentLevel = Math.floor(numberedListMatch[1].length / 2);
-            const level = currentHeaderLevel + 1 + indentLevel;
-            if (!opts.maxDepth || level <= opts.maxDepth) {
-              elements.push({
-                level,
-                text: numberedListMatch[2] + numberedListMatch[3],
-                type: "numbered-list",
-                lineNumber,
-              });
-              continue;
-            }
-          }
         }
 
         // Regular paragraphs (if we have a current header context)
@@ -427,5 +441,64 @@ export class MarkdownParser {
     text = text.replace(/`(.*?)`/g, "<code>$1</code>");
 
     return text;
+  }
+
+  /**
+   * Determines if a list-like line is part of a mixed-content indented code block.
+   * This looks for nearby non-list indented content that suggests a code block context.
+   */
+  private static isPartOfMixedCodeBlock(
+    lines: string[],
+    currentIndex: number
+  ): boolean {
+    // Look backward for evidence of mixed content
+    for (let i = currentIndex - 1; i >= 0; i--) {
+      const line = lines[i];
+
+      // Empty line - continue looking
+      if (line.trim() === "") {
+        continue;
+      }
+
+      // If we find a non-indented line, stop looking backward
+      if (!line.match(/^    /) && !line.match(/^\t/)) {
+        break;
+      }
+
+      // If we find an indented line that's clearly not a list item, this is mixed content
+      if (
+        (line.match(/^    /) || line.match(/^\t/)) &&
+        !line.match(/^\s*[-*+]\s/) &&
+        !line.match(/^\s*\d+\.\s/)
+      ) {
+        return true;
+      }
+    }
+
+    // Look forward for evidence of mixed content
+    for (let i = currentIndex + 1; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Empty line - continue looking
+      if (line.trim() === "") {
+        continue;
+      }
+
+      // If we find a non-indented line, stop looking forward
+      if (!line.match(/^    /) && !line.match(/^\t/)) {
+        break;
+      }
+
+      // If we find an indented line that's clearly not a list item, this is mixed content
+      if (
+        (line.match(/^    /) || line.match(/^\t/)) &&
+        !line.match(/^\s*[-*+]\s/) &&
+        !line.match(/^\s*\d+\.\s/)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

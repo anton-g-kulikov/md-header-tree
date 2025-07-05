@@ -158,14 +158,20 @@ Another paragraph.`;
 ## Header 2`;
     const elements = MarkdownParser.parseDocument(markdown);
 
+    // With the fixed parser, we now get 3 elements:
+    // 1. Header 1 (header)
+    // 2. Both indented lines combined into one code-block (because mixed content)
+    // 3. Header 2 (header)
     assert.strictEqual(elements.length, 3);
     assert.strictEqual(elements[0].text, "Header 1");
+    assert.strictEqual(elements[0].type, "header");
     assert.strictEqual(elements[1].type, "code-block");
     assert.strictEqual(
       elements[1].text,
       "# This should not be parsed as header\n- This should not be parsed as list"
     );
     assert.strictEqual(elements[2].text, "Header 2");
+    assert.strictEqual(elements[2].type, "header");
   });
 
   test("parseDocument should handle empty input", () => {
@@ -642,5 +648,125 @@ suite("StyleManager Tests", () => {
     // Check CSP allows navigation
     assert.ok(html.includes("Content-Security-Policy"), "Should include CSP");
     // Note: We don't need special CSP changes for standard links
+  });
+});
+
+suite("Nested List Parsing", () => {
+  test("should correctly parse 3rd level nested lists with 4 spaces", () => {
+    const markdown = `## Header
+- Level 1
+  - Level 2
+    - Level 3 with 4 spaces`;
+
+    const result = MarkdownParser.parseDocument(markdown, {
+      includeLists: true,
+      includeHeaders: true,
+    });
+
+    // Should have header + 3 list items, not code blocks
+    assert.strictEqual(result.length, 4);
+    assert.strictEqual(result[0].type, "header");
+    assert.strictEqual(result[1].type, "list");
+    assert.strictEqual(result[2].type, "list");
+    assert.strictEqual(result[3].type, "list"); // This should be list, not code-block
+    assert.strictEqual(result[3].level, 5); // Header(2) + 1 + indentLevel(2) = 5
+  });
+
+  test("should correctly parse 4th level nested lists with 6 spaces", () => {
+    const markdown = `## Header
+- Level 1
+  - Level 2
+    - Level 3
+      - Level 4 with 6 spaces`;
+
+    const result = MarkdownParser.parseDocument(markdown, {
+      includeLists: true,
+      includeHeaders: true,
+    });
+
+    // Should have header + 4 list items, not code blocks
+    assert.strictEqual(result.length, 5);
+    assert.strictEqual(result[0].type, "header");
+    assert.strictEqual(result[1].type, "list");
+    assert.strictEqual(result[2].type, "list");
+    assert.strictEqual(result[3].type, "list");
+    assert.strictEqual(result[4].type, "list"); // This should be list, not code-block
+    assert.strictEqual(result[4].level, 6); // Header(2) + 1 + indentLevel(3) = 6
+  });
+
+  test("should distinguish lists from actual indented code blocks", () => {
+    const markdown = `## Header
+- List item
+    const code = "this is code";
+    return code;`;
+
+    const result = MarkdownParser.parseDocument(markdown, {
+      includeLists: true,
+      includeHeaders: true,
+    });
+
+    // Should have header + list item + code block
+    assert.strictEqual(result.length, 3);
+    assert.strictEqual(result[0].type, "header");
+    assert.strictEqual(result[1].type, "list");
+    assert.strictEqual(result[2].type, "code-block"); // This should remain code-block
+  });
+
+  test("should handle mixed list indentation levels correctly", () => {
+    const markdown = `## Table of Contents
+- [Level 1](#level-1)
+  - [Level 2](#level-2)
+    - [Level 3 with 4 spaces](#level-3)
+      - [Level 4 with 6 spaces](#level-4)
+  - [Back to Level 2](#level-2b)`;
+
+    const result = MarkdownParser.parseDocument(markdown, {
+      includeLists: true,
+      includeHeaders: true,
+    });
+
+    // Should have header + 5 list items
+    assert.strictEqual(result.length, 6);
+    assert.strictEqual(result[0].type, "header");
+    // All should be list items
+    for (let i = 1; i <= 5; i++) {
+      assert.strictEqual(
+        result[i].type,
+        "list",
+        `Item ${i} should be a list item`
+      );
+    }
+    // Check levels: 2+1+0=3, 2+1+1=4, 2+1+2=5, 2+1+3=6, 2+1+1=4
+    assert.strictEqual(result[1].level, 3); // Level 1
+    assert.strictEqual(result[2].level, 4); // Level 2
+    assert.strictEqual(result[3].level, 5); // Level 3
+    assert.strictEqual(result[4].level, 6); // Level 4
+    assert.strictEqual(result[5].level, 4); // Back to Level 2
+  });
+
+  test("should preserve actual indented code blocks when not list items", () => {
+    const markdown = `## Code Example
+Here is some code:
+
+    function example() {
+        return "indented code";
+    }
+
+- This is a list item
+    - This should be a nested list, not code`;
+
+    const result = MarkdownParser.parseDocument(markdown, {
+      includeLists: true,
+      includeHeaders: true,
+      includeParagraphs: true,
+    });
+
+    // Should have: header, paragraph, code-block, list, list
+    assert.strictEqual(result.length, 5);
+    assert.strictEqual(result[0].type, "header");
+    assert.strictEqual(result[1].type, "paragraph");
+    assert.strictEqual(result[2].type, "code-block"); // Actual code block
+    assert.strictEqual(result[3].type, "list"); // List item
+    assert.strictEqual(result[4].type, "list"); // Nested list item (not code!)
   });
 });

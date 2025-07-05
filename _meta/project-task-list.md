@@ -94,6 +94,36 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
   - ✅ Handle complex URLs with parentheses using balanced parsing algorithm
   - ✅ All 45 unit and integration tests passing successfully
 
+## Active Tasks 🚧
+
+_(No active tasks - ready for publishing)_
+
+### Ready for Release
+
+- [ ] **RELEASE-TASK-001: Prepare extension for publishing** - 📋 **READY**
+  - Prerequisites: ✅ All critical bugs fixed, ✅ Test suite complete (52/52 passing), ✅ Documentation updated
+  - Next steps: Version bump, CHANGELOG update, build and publish to marketplace
+  - Status: 📋 **READY** - Extension ready for version 1.3.1 release
+
+- [x] **CORE-TASK-001: Fix nested list parsing with 4+ spaces indentation** - ✅ **COMPLETED**
+  - Issue: 3rd and 4th level nested list items are incorrectly rendered as code blocks
+  - Root cause: Code block detection (4+ spaces) happens before list item detection
+  - Solution: Modified parsing order to check for list items before indented code blocks, with smart detection for mixed content
+  - Files modified: `src/markdownParser.ts`, test files  
+  - Additional fixes applied:
+    - Fixed `isPartOfMixedCodeBlock` regex patterns to handle variable indentation using `^\s*` instead of `^    `
+    - Added indentation check to header detection to prevent indented headers from being parsed as headers
+    - Updated test assertions to match correct parser behavior
+  - Acceptance criteria: ✅ Nested lists with 4+ space indentation render as list items, not code blocks
+  - Test status: ✅ All 52 tests passing
+  - Status: ✅ **COMPLETED** - Ready for publishing
+
+- [x] **TEST-TASK-001: Align test suite with corrected parser behavior** - ✅ **COMPLETED**
+  - Updated failing unit tests to match the correct parser output after nested list fix
+  - Fixed test assertions for indented code blocks, nested lists, and mixed indentation scenarios
+  - All edge cases properly covered and documented
+  - Status: ✅ **COMPLETED** - All tests aligned and passing
+
 ## NOT Planned Tasks (as of yet) 📋
 
 ### Current Sprint Tasks

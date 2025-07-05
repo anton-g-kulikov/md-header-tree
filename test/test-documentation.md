@@ -84,6 +84,26 @@ npm run pretest
 | `should parse test-code-blocks.md fixture`      | Test code block handling    | ✅ Implemented |
 | `should parse test-readme-with-code.md fixture` | Test README-style documents | ✅ Implemented |
 
+### Nested List Parsing Tests
+
+| Test Case ID  | Description                                                      | Type | Status    |
+| :------------ | :--------------------------------------------------------------- | :--- | :-------- |
+| CORE-UNIT-010 | parseDocument should correctly parse 3rd level nested lists      | Unit | ✅ Completed |
+| CORE-UNIT-011 | parseDocument should correctly parse 4th level nested lists      | Unit | ✅ Completed |
+| CORE-UNIT-012 | parseDocument should distinguish lists from indented code blocks | Unit | ✅ Completed |
+| CORE-UNIT-013 | parseDocument should handle mixed list indentation levels        | Unit | ✅ Completed |
+| CORE-UNIT-014 | parseDocument should preserve actual indented code blocks        | Unit | ✅ Completed |
+
+**Status**: ✅ **All nested list parsing tests completed and passing**
+
+**Implementation Summary**: 
+- Fixed nested list parsing bug where 3rd and 4th level lists (4+ spaces) were incorrectly parsed as code blocks
+- Updated parser logic to prioritize list detection over indented code block detection
+- Fixed regex patterns in `isPartOfMixedCodeBlock` function to handle variable indentation
+- Added indentation check to header detection logic
+- All test assertions updated to match correct parser behavior
+- Total test coverage: 52/52 tests passing
+
 ## Test Fixtures
 
 All test fixtures are located in `/test/fixtures/`:
