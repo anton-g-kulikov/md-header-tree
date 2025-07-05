@@ -94,6 +94,25 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
   - ✅ Handle complex URLs with parentheses using balanced parsing algorithm
   - ✅ All 45 unit and integration tests passing successfully
 
+### Critical Bug Fixes and Publishing (1.3.1)
+
+- ✅ **CORE-TASK-002: Fix nested list parsing issues** - ✅ **COMPLETED**
+  - ✅ Resolved issue where 3rd and 4th level nested list items (with 4+ spaces indentation) were incorrectly rendered as code blocks
+  - ✅ Improved `isPartOfMixedCodeBlock` detection with variable indentation support (`^\s*` patterns)
+  - ✅ Enhanced parsing order to prioritize list detection over indented code block detection
+  - ✅ Added smart context analysis to distinguish between genuine code blocks and deeply nested lists
+  - ✅ Fixed indented header detection to prevent false header parsing in code blocks
+  - ✅ All 52 tests now pass with comprehensive coverage of edge cases
+  - ✅ Added ADR-002 documenting the nested list parsing fix architecture decision
+
+- ✅ **PUB-TASK-001: Publish extension to VS Code Marketplace** - ✅ **COMPLETED**
+  - ✅ Version bump from 1.3.0 to 1.3.1 for critical bug fixes
+  - ✅ Created and pushed git tag v1.3.1
+  - ✅ Verified all pre-publishing requirements (tests, linting, compilation)
+  - ✅ Successfully published `Tony-g-K.markdown-hierarchy-viewer v1.3.1` to VS Code Marketplace
+  - ✅ Extension available at: https://marketplace.visualstudio.com/items?itemName=Tony-g-K.markdown-hierarchy-viewer
+  - ✅ Management hub accessible for future updates and analytics
+
 ## Active Tasks 🚧
 
 _(No active tasks - ready for publishing)_
