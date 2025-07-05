@@ -97,6 +97,7 @@ This document tracks all tasks, features, and improvements for the Markdown Hier
 ### Critical Bug Fixes and Publishing (1.3.1)
 
 - ✅ **CORE-TASK-002: Fix nested list parsing issues** - ✅ **COMPLETED**
+
   - ✅ Resolved issue where 3rd and 4th level nested list items (with 4+ spaces indentation) were incorrectly rendered as code blocks
   - ✅ Improved `isPartOfMixedCodeBlock` detection with variable indentation support (`^\s*` patterns)
   - ✅ Enhanced parsing order to prioritize list detection over indented code block detection
