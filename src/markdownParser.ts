@@ -234,7 +234,11 @@ export class MarkdownParser {
         }
 
         // Check for headers (but not for indented lines which should be code blocks)
-        if (opts.includeHeaders && !originalLine.match(/^    /) && !originalLine.match(/^\t/)) {
+        if (
+          opts.includeHeaders &&
+          !originalLine.match(/^    /) &&
+          !originalLine.match(/^\t/)
+        ) {
           const headerMatch = line.match(/^(#+)\s+(.*)/);
           if (headerMatch) {
             const level = headerMatch[1].length;

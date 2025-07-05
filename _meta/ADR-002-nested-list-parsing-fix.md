@@ -2,7 +2,7 @@
 
 **Date**: 2025-07-05  
 **Status**: Accepted  
-**Decision Makers**: Development Team  
+**Decision Makers**: Development Team
 
 ## Context
 
@@ -11,7 +11,7 @@ The Markdown Hierarchy Viewer extension was incorrectly parsing deeply nested li
 ### Problem Statement
 
 - 3rd level nested lists (4 spaces): `    - Item` were being parsed as code blocks
-- 4th level nested lists (6 spaces): `      - Item` were being parsed as code blocks  
+- 4th level nested lists (6 spaces): `      - Item` were being parsed as code blocks
 - Users reported that nested lists with links were not displaying properly
 - The tree structure was showing code blocks instead of the expected nested list hierarchy
 
@@ -27,15 +27,18 @@ We decided to modify the parsing logic in `src/markdownParser.ts` to prioritize 
 
 ### Changes Implemented
 
-1. **Reordered Parsing Logic**: 
+1. **Reordered Parsing Logic**:
+
    - List item detection now occurs before indented code block detection
    - Both bullet lists (`-`, `*`, `+`) and numbered lists are checked first
 
 2. **Enhanced Mixed Content Detection**:
+
    - Updated `isPartOfMixedCodeBlock` regex patterns from `^    ` to `^\s*` to handle variable indentation
    - Function now correctly identifies when indented content contains mixed list and non-list items
 
 3. **Indented Header Fix**:
+
    - Added check to prevent indented lines from being parsed as headers
    - Headers are now only detected in non-indented lines
 
@@ -51,13 +54,13 @@ We decided to modify the parsing logic in `src/markdownParser.ts` to prioritize 
 // Before: Fixed indentation patterns
 if (line.match(/^    [-*+]\s/)) { ... }
 
-// After: Variable indentation patterns  
+// After: Variable indentation patterns
 if (line.match(/^\s*[-*+]\s/)) { ... }
 ```
 
 ### Parsing Order (New)
 
-1. Check for fenced code blocks (```) 
+1. Check for fenced code blocks (```)
 2. Skip empty lines
 3. **Check for headers (non-indented only)**
 4. **Check for list items (with mixed content analysis)**
@@ -67,6 +70,7 @@ if (line.match(/^\s*[-*+]\s/)) { ... }
 ### Mixed Content Analysis
 
 The `isPartOfMixedCodeBlock` function now:
+
 - Looks for indented content near the current line
 - Identifies non-list content in indented blocks
 - Returns `true` only when there's genuine mixed content (indicating a code block)
@@ -76,10 +80,8 @@ The `isPartOfMixedCodeBlock` function now:
 
 1. **Simple Priority Switch**: Just reordering without mixed content analysis
    - **Rejected**: Would cause all indented code to be parsed as lists
-   
 2. **Indentation Threshold**: Using higher indentation threshold (6+ spaces) for code blocks
    - **Rejected**: Would break standard Markdown 4-space code block convention
-   
 3. **Context-Based Parsing**: Analyzing surrounding content extensively
    - **Rejected**: Too complex and potentially slow for large documents
 
@@ -104,7 +106,7 @@ The `isPartOfMixedCodeBlock` function now:
 - All 52 tests now pass
 - Added test coverage for:
   - 3rd level nested lists (4 spaces)
-  - 4th level nested lists (6 spaces) 
+  - 4th level nested lists (6 spaces)
   - Mixed content code blocks
   - Indented headers
   - Complex nested list structures with links

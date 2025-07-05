@@ -101,15 +101,17 @@ _(No active tasks - ready for publishing)_
 ### Ready for Release
 
 - [ ] **RELEASE-TASK-001: Prepare extension for publishing** - 📋 **READY**
+
   - Prerequisites: ✅ All critical bugs fixed, ✅ Test suite complete (52/52 passing), ✅ Documentation updated
   - Next steps: Version bump, CHANGELOG update, build and publish to marketplace
   - Status: 📋 **READY** - Extension ready for version 1.3.1 release
 
 - [x] **CORE-TASK-001: Fix nested list parsing with 4+ spaces indentation** - ✅ **COMPLETED**
+
   - Issue: 3rd and 4th level nested list items are incorrectly rendered as code blocks
   - Root cause: Code block detection (4+ spaces) happens before list item detection
   - Solution: Modified parsing order to check for list items before indented code blocks, with smart detection for mixed content
-  - Files modified: `src/markdownParser.ts`, test files  
+  - Files modified: `src/markdownParser.ts`, test files
   - Additional fixes applied:
     - Fixed `isPartOfMixedCodeBlock` regex patterns to handle variable indentation using `^\s*` instead of `^    `
     - Added indentation check to header detection to prevent indented headers from being parsed as headers
