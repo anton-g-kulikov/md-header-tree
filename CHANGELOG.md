@@ -2,6 +2,23 @@
 
 All notable changes to the "markdown-hierarchy-viewer" extension will be documented in this file.
 
+## [1.3.1] - 2025-07-05
+
+### 🐛 Critical Bug Fixes
+
+- **📝 Fixed Nested List Parsing**: Resolved issue where 3rd and 4th level nested list items (with 4+ spaces indentation) were incorrectly rendered as code blocks
+  - Nested lists with 4+ spaces now properly display as list items in the tree view
+  - Improved `isPartOfMixedCodeBlock` detection with variable indentation support (`^\s*` patterns)
+  - Enhanced parsing order to prioritize list detection over indented code block detection
+  - Added smart context analysis to distinguish between genuine code blocks and deeply nested lists
+  - Fixed indented header detection to prevent false header parsing in code blocks
+  - All 52 tests now pass with comprehensive coverage of edge cases
+
+### 📚 Documentation
+
+- **📖 Architecture Decision Record**: Added ADR-002 documenting the nested list parsing fix
+- **📋 Updated Project Documentation**: Enhanced documentation with parsing logic improvements
+
 ## [1.3.0] - 2025-06-24
 
 ### ✨ New Features

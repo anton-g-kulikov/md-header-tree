@@ -114,6 +114,7 @@ _(No active tasks - ready for publishing)_
     - Fixed `isPartOfMixedCodeBlock` regex patterns to handle variable indentation using `^\s*` instead of `^    `
     - Added indentation check to header detection to prevent indented headers from being parsed as headers
     - Updated test assertions to match correct parser behavior
+  - Documentation: ✅ ADR-002 created, project documentation updated
   - Acceptance criteria: ✅ Nested lists with 4+ space indentation render as list items, not code blocks
   - Test status: ✅ All 52 tests passing
   - Status: ✅ **COMPLETED** - Ready for publishing

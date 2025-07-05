@@ -25,6 +25,9 @@ This document provides comprehensive information about the Markdown Hierarchy Vi
    - Parses Markdown content into structured tree format
    - Handles headers, lists, paragraphs, and code blocks
    - Provides formatting and HTML escaping
+   - **Enhanced List Processing**: Implements smart detection to distinguish between nested lists and indented code blocks
+   - **Mixed Content Analysis**: Uses `isPartOfMixedCodeBlock` logic to correctly identify code blocks vs deeply nested lists
+   - **Indentation Handling**: Properly processes list items with 4+ spaces indentation as lists, not code blocks
 
 4. **Tree Renderer** (`src/treeRenderer.ts`)
 
@@ -61,7 +64,9 @@ This document provides comprehensive information about the Markdown Hierarchy Vi
 - **Real-time Updates**: Live preview that updates as you edit
 - **Beautiful Typography**: Elegant fonts and spacing
 - **Customizable Styling**: User-configurable colors, fonts, and symbols
-- **Multiple Content Types**: Headers, lists, paragraphs, code blocks
+- **Multiple Content Types**: Headers, lists, paragraphs, code blocks, and links
+- **Advanced List Support**: Correctly handles deeply nested lists (3rd, 4th level) with 4+ spaces indentation
+- **Smart Content Detection**: Distinguishes between nested lists and indented code blocks using context analysis
 - **VS Code Integration**: Native command palette and menu integration
 
 ## Design Patterns
@@ -94,6 +99,7 @@ The extension provides extensive configuration options:
 - **Development Guide**: `/meta/DEVELOPMENT.md`
 - **Publishing Guide**: `/meta/PUBLISHING.md`
 - **ADR-001**: `/meta/ADR-001-enhanced-file-detection.md` - Enhanced File Detection System
+- **ADR-002**: `/meta/ADR-002-nested-list-parsing-fix.md` - Nested List Parsing Priority Fix
 
 ## Extension Lifecycle
 
